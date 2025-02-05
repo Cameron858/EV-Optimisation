@@ -14,8 +14,8 @@ class Vehicle:
     # This defines the +-% that a mutation can possible change by
     # i.e. mutated_x = x * (1 + uniform(-0.1, 0.1))
     MUTATION_PERC_CHANGE = 0.05
-    BATTERY_WEIGHT_RATIO = 4
-    MOTOR_WEIGHT_RATIO = 6
+    BATTERY_WEIGHT_RATIO = 6  # kg/kWh
+    MOTOR_WEIGHT_RATIO = 4  # kg/kW
 
     def __init__(
         self,

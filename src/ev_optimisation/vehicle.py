@@ -36,8 +36,7 @@ class Vehicle:
         self._update_battery_weight()
         self._update_motor_weight()
 
-        if logger is None:
-            self.logger = logging.getLogger("vehicle")
+        self.logger = logger or logging.getLogger("vehicle")
 
     def mutate(self, rate: float) -> None:
         """Mutate an instances genes."""

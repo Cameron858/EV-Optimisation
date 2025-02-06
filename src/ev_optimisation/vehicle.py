@@ -63,6 +63,15 @@ class Vehicle:
                 -Vehicle.MUTATION_PERC_CHANGE, Vehicle.MUTATION_PERC_CHANGE
             )
 
+    def crossover(self, other: Self) -> Self:
+        """Perform genetic crossover between two genomes."""
+        child = Vehicle(
+            motor_power=blx_alpha(self.motor_power, other.motor_power),
+            battery_capacity=blx_alpha(self.battery_capacity, other.battery_capacity),
+            frame_weight=blx_alpha(self.frame_weight, other.frame_weight),
+        )
+        return child
+
     def _update_motor_weight(self):
         self.motor_weight: kg = self.motor_power * Vehicle.MOTOR_WEIGHT_RATIO
 

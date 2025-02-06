@@ -1,10 +1,25 @@
 import logging
 import random
+from typing import Self
 
 
 type kg = float | int
 type kW = float | int
 type kWh = float | int
+
+
+def blx_alpha(gene_1: float, gene_2: float, alpha: float = 0.2) -> float:
+    """Perform BLX-a crossover as proposed by Eshelman and Schaffer (1993).
+
+    Larger alpha `a` values generate solutions further outside the parent range.
+    """
+    d = abs(gene_1 - gene_2)
+    d_scaled = d * alpha
+
+    lower_bound = min(gene_1, gene_2) - d_scaled
+    upper_bound = max(gene_1, gene_2) + d_scaled
+
+    return random.uniform(lower_bound, upper_bound)
 
 
 class Vehicle:

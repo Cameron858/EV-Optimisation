@@ -68,8 +68,3 @@ class Vehicle:
 
     def _update_battery_weight(self):
         self.battery_weight: kg = self.battery_capacity * Vehicle.BATTERY_WEIGHT_RATIO
-
-
-if __name__ == "__main__":
-
-    v = Vehicle(100, 200, 500)

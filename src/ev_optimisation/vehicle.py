@@ -42,7 +42,10 @@ class Vehicle:
         self.logger = logger or logging.getLogger("vehicle")
 
     def mutate(self, rate: float) -> None:
-        """Mutate an instances genes independantly from each other."""
+        """Mutate an instances genes inplace independantly from each other.
+
+        Updates derived attributes, i.e. motor and battery weight.
+        """
         if not 0 <= rate <= 1:
             raise ValueError(f"Mutation rate must be in range [0, 1]. Given: {rate}")
 

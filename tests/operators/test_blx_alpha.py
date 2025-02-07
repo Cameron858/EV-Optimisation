@@ -15,6 +15,7 @@ def test_that_blx_alpha_is_symmetrical_for_swapped_inputs():
     result1 = blx_alpha(3.0, 7.0, 0.2)
 
     # set seed again to reset sequence random.uniform produces
+    # test will fail if this is removed
     random.seed(42)
     result2 = blx_alpha(7.0, 3.0, 0.2)
 

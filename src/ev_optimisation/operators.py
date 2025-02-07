@@ -1,7 +1,7 @@
 import random
 
 
-def _blx_alpha_bounds(gene_1: float, gene_2: float, alpha: float = 0.2):
+def _blx_alpha_bounds(gene_1: float, gene_2: float, alpha: float):
     """Calculates lower and upperbounds."""
     diff = abs(gene_1 - gene_2)
     diff_scaled = diff * alpha

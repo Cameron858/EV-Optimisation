@@ -57,14 +57,12 @@ def test_that_zero_mutation_rate_produces_no_mutations():
     before_battery_weight = v.battery_weight
     before_motor_power = v.motor_power
     before_battery_capacity = v.battery_capacity
-    before_frame_weight = v.frame_weight
 
     v.mutate(0)
 
     # core attributes
     assert v.motor_power == before_motor_power
     assert v.battery_capacity == before_battery_capacity
-    assert v.frame_weight == before_frame_weight
 
     # derived attributes
     assert v.motor_weight == before_motor_weight
@@ -83,14 +81,12 @@ def test_that_one_mutation_rate_always_produces_mutations(mocker):
     before_battery_weight = v.battery_weight
     before_motor_power = v.motor_power
     before_battery_capacity = v.battery_capacity
-    before_frame_weight = v.frame_weight
 
     v.mutate(1)
 
     # core attributes
     assert v.motor_power == 2 * before_motor_power
     assert v.battery_capacity == 2 * before_battery_capacity
-    assert v.frame_weight == 2 * before_frame_weight
 
     # derived attributes
     assert v.motor_weight == 2 * before_motor_weight

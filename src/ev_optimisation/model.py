@@ -6,6 +6,11 @@ def rpm_to_rads(rpm):
     return (rpm * 2 * math.pi) / 60
 
 
+def kmh_to_ms(kmh):
+    """Convert kmh-1 to ms-1"""
+    return kmh / 3.6
+
+
 def coeff_rolling_resistance(tire_pressure: float, velocity: float):
     """Calculate the coefficient of rolling resistance.
 

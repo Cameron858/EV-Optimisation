@@ -24,18 +24,14 @@ class Vehicle:
         self,
         motor_power: kW,
         battery_capacity: kWh,
-        frame_weight: kg,
         logger: logging.Logger | None = None,
     ):
         """
         motor_power: kW
         battery_capacity: kWh
-        frame_weight: kg
         """
         self.motor_power = motor_power
         self.battery_capacity = battery_capacity
-        self.frame_weight = frame_weight
-
         self._update_battery_weight()
         self._update_motor_weight()
 
@@ -63,18 +59,11 @@ class Vehicle:
             )
             self._update_battery_weight()
 
-        # mutate frame weight
-        if random.random() < rate:
-            self.frame_weight *= 1 + random.uniform(
-                -Vehicle.MUTATION_PERC_CHANGE, Vehicle.MUTATION_PERC_CHANGE
-            )
-
     def crossover(self, other: Self) -> Self:
         """Perform genetic crossover between two genomes."""
         child = Vehicle(
             motor_power=blx_alpha(self.motor_power, other.motor_power),
             battery_capacity=blx_alpha(self.battery_capacity, other.battery_capacity),
-            frame_weight=blx_alpha(self.frame_weight, other.frame_weight),
         )
         return child
 

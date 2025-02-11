@@ -83,3 +83,6 @@ class Vehicle:
 
     def _update_battery_weight(self):
         self.battery_weight: kg = self.battery_capacity * Vehicle.BATTERY_WEIGHT_RATIO
+
+    def mass(self):
+        return self.motor_weight + self.battery_weight

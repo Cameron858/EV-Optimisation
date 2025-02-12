@@ -41,7 +41,7 @@ def rolling_resistance_force(c: float, m: float, g=9.81):
 
 
 def aerodynamic_drag_force(c, v, a, p=1.2):
-    """Calculate the drag force due to air resistance.
+    """Calculate the drag force due to air resistance in N.
 
     Parameters
     -----------

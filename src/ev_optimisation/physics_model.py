@@ -11,6 +11,26 @@ def kmh_to_ms(kmh):
     return kmh / 3.6
 
 
+def motor_driving_force(motor_power, motor_rads, gear_ratio, tire_radius):
+    """Calculate the driving force at the wheels from the motor in N.
+
+    F = P / wr
+
+    Parameters
+    -----------
+    motor_power : float
+        Power of motor in [W]
+    motor_rads : float
+        Angular velocity of motor in [rads-1]
+    gear_ratio : float
+        Final gear ratio of drivetrain.
+    tire_radius : float
+        Radius of tire in [m]
+    """
+    w_wheel_rads = motor_rads / gear_ratio
+    return motor_power / (w_wheel_rads * tire_radius)
+
+
 def coeff_rolling_resistance(tire_pressure: float, velocity: float):
     """Calculate the coefficient of rolling resistance.
 

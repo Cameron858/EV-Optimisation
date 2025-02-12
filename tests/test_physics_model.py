@@ -1,4 +1,4 @@
-from ev_optimisation.model import rpm_to_rads, coeff_rolling_resistance
+from ev_optimisation.physics_model import rpm_to_rads, coeff_rolling_resistance
 import pytest
 
 

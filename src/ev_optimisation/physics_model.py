@@ -40,7 +40,7 @@ def rolling_resistance_force(c: float, m: float, g=9.81):
     return c * m * g
 
 
-def aerodynamic_drag_force(c, v, a, p=1.2):
+def aerodynamic_drag_force(c, v, a, rho=1.2):
     """Calculate the drag force due to air resistance in N.
 
     Parameters
@@ -54,4 +54,4 @@ def aerodynamic_drag_force(c, v, a, p=1.2):
     p : float, optional
         Density of fluid in [kgm-3]. Defaults to 1.2 for air at NTP.
     """
-    return c * 0.5 * p * (v**2) * a
+    return c * 0.5 * rho * (v**2) * a

@@ -119,6 +119,62 @@ def ev_range(F, v_kmh, drivetrain_eff, battery_kWh):
     return v_kmh * t_hrs
 
 
+def time_to_target_speed(
+    F_drive,
+    p_tire_bar,
+    m_kg,
+    A_m2,
+    c_d,
+    v_target_kmh=100,
+    dt=0.01,
+):
+    """Calculate the time required for an EV to reach a target speed.
+
+    This function uses an Euler integration.
+
+    Parameters
+    -----------
+    F_drive : float
+        Constant driving force from motor in [N]
+    p_tire_bar : float
+        Tire pressure in [bar].
+    m_kg : float
+        Mass of the vehicle in [kg].
+    A_m2 : float
+        Cross-sectional area of the vehicle in [m2].
+    c_d : float
+        Drag coefficient.
+    v_target_kmh : float
+        Target speed in [kmh-1] (default is 100kmh-1).
+    dt : float, optional
+        Time step in seconds (default is 0.01s).
+
+    Returns
+    -------
+    float
+        Time in seconds to reach the target speed.
+    """
+    v = 0  # ms-1
+    v_max = kmh_to_ms(v_target_kmh)  # ms-1
+    t = 0  # s
+
+    while v < round(v_max, 2):
+
+        # calculate resistive forces
+        c_r = coeff_rolling_resistance(p_tire_bar, ms_to_kmh(v))
+        F_rolling = rolling_resistance_force(c_r, m_kg)
+        F_drag = drag_force(c_d, v, A_m2)
+
+        F_net = F_drive - sum((F_drag, F_rolling))
+        a = F_net / m_kg
+
+        # update values
+        v += a * dt
+        t += dt
+
+    return t
+
+
 if __name__ == "__main__":
 
     # example for calculating range
@@ -149,3 +205,10 @@ if __name__ == "__main__":
         F_total, v_cruising_kmh, drivetrain_eff, battery_capacity_kWh
     )
     print(f"{ev_range_km=:.2f}km")
+
+    # acceleration time
+    F_drive = motor_driving_force(
+        motor_power_W, rpm_to_rads(motor_rpm), gear_ratio, r_tire_m
+    )
+    ev_time = time_to_target_speed(F_drive, p_tire_bar, m_kg, A_m2, c_d)
+    print(f"{ev_time=:0.2f}")

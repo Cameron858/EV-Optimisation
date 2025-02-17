@@ -11,6 +11,11 @@ def kmh_to_ms(kmh):
     return kmh / 3.6
 
 
+def ms_to_kmh(ms):
+    """Convert ms-1 to kmh-1"""
+    return ms * 3.6
+
+
 def motor_driving_force(motor_power, motor_rads, gear_ratio, tire_radius):
     """Calculate the driving force at the wheels from the motor in N.
 

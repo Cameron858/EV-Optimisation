@@ -98,7 +98,7 @@ def ev_range(F, v_kmh, drivetrain_eff, battery_kWh):
     v_kmh : float
         The cruising speed of the vehicle in [kmh-1]
     drivetrain_eff : float
-        The efficiency of the drivetrain. Must be in range [0, 1] inclusive.
+        The efficiency of the drivetrain. Must be in range 0 < eta <= 1 inclusive.
     battery_kWh : float
         The capacity of the battery in [kWh]
 
@@ -107,6 +107,12 @@ def ev_range(F, v_kmh, drivetrain_eff, battery_kWh):
     float
         Range in [km]
     """
+
+    if not 0 < drivetrain_eff <= 1:
+        raise ValueError(
+            f"Drivetrain efficiency must be in range 0 < eta <= 1. Given: {drivetrain_eff}"
+        )
+
     # P (W) = F (N) * v (ms-1)
     P_required_W = F * kmh_to_ms(v_kmh)
 

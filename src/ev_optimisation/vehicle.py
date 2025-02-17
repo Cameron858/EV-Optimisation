@@ -18,7 +18,7 @@ class Vehicle:
 
     motor_power: kW
     battery_capacity: kWh
-    logger = field(default=logging.getLogger("vehicle"))
+    logger: logging.Logger = field(default=logging.getLogger("vehicle"))
 
     @property
     def motor_weight(self) -> kg:

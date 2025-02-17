@@ -75,3 +75,40 @@ def drag_force(c, v, a, rho=1.2):
         Density of fluid in [kgm-3]. Defaults to 1.2 for air at NTP.
     """
     return c * 0.5 * rho * (v**2) * a
+
+
+def ev_range(F, v_kmh, drivetrain_eff, battery_kWh):
+    """Calculate the range of an EV at a constant velocity.
+
+    This function uses the following assumptions:
+    - The vehicle is travelling at constant speed
+    - All energy consumption is used for maintaining speed
+    - The vehicle is travelling in an infinite flat plane
+    - No energy is lost in getting up to speed, i.e. the vehicle instantaneously accelerates to the given `v_kmh`
+
+    Parameters
+    -----------
+    F : float
+        The force required to maintain constant speed in [N]
+    v_kmh : float
+        The cruising speed of the vehicle in [kmh-1]
+    drivetrain_eff : float
+        The efficiency of the drivetrain. Must be in range [0, 1] inclusive.
+    battery_kWh : float
+        The capacity of the battery in [kWh]
+
+    Returns
+    -------
+    float
+        Range in [km]
+    """
+    # P (W) = F (N) * v (ms-1)
+    P_required_W = F * kmh_to_ms(v_kmh)
+
+    P_required_kW = P_required_W / 1000
+
+    # account for drivetrain efficiency
+    P_required_kW = P_required_kW / drivetrain_eff
+
+    t_hrs = battery_kWh / P_required_kW
+    return v_kmh * t_hrs

@@ -1,4 +1,7 @@
 import random
+from typing import Callable
+
+from ev_optimisation.vehicle import Vehicle
 
 
 def _blx_alpha_bounds(gene_1: float, gene_2: float, alpha: float):
@@ -19,3 +22,20 @@ def blx_alpha(gene_1: float, gene_2: float, alpha: float = 0.2) -> float:
     """
     lower_bound, upper_bound = _blx_alpha_bounds(gene_1, gene_2, alpha)
     return random.uniform(lower_bound, upper_bound)
+
+
+def crossover(
+    parent_1: Vehicle,
+    parent_2: Vehicle,
+    operator: Callable = blx_alpha,
+    **operator_kwargs
+) -> Vehicle:
+    """Perform genetic crossover from two parents."""
+    return Vehicle(
+        motor_power=operator(
+            parent_1.motor_power, parent_2.motor_power, **operator_kwargs
+        ),
+        battery_capacity=operator(
+            parent_1.battery_capacity, parent_2.battery_capacity, **operator_kwargs
+        ),
+    )

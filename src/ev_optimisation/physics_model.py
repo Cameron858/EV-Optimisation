@@ -131,10 +131,6 @@ if __name__ == "__main__":
 
     v_cruising_ms = kmh_to_ms(v_cruising_kmh)
 
-    # driving force from motor
-    w_motor_rads = rpm_to_rads(motor_rpm)
-    F_drive = motor_driving_force(motor_power_W, w_motor_rads, gear_ratio, r_tire_m)
-
     # rolling resistance
     c_r = coeff_rolling_resistance(p_tire_bar, v_cruising_kmh)
     F_rolling = rolling_resistance_force(c_r, m_kg)

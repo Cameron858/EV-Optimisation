@@ -180,6 +180,52 @@ def time_to_target_speed(
     return t
 
 
+def range_of_ev(
+    v_kmh, p_tire_bar, m_kg, battery_capacity_kWh, c_d, A_m2, drivetrain_eff
+):
+    """Calculate the range in [km] of a vehicle.
+
+    This function uses the following assumptions:
+    - The vehicle is travelling at constant speed
+    - All energy consumption is used for maintaining speed
+    - The vehicle is travelling in an infinite flat plane
+    - No energy is lost in getting up to speed, i.e. the vehicle instantaneously accelerates to the given `v_kmh`
+
+    Parameters
+    -----------
+    v_kmh : float
+        The cruising speed of the vehicle in [kmh-1]
+    p_tire_bar : float
+        Tire pressure in [bar].
+    m_kg : float
+        Mass of the vehicle in [kg].
+    battery_kWh : float
+        The capacity of the battery in [kWh]
+    A_m2 : float
+        Cross-sectional area of the vehicle in [m2].
+    c_d : float
+        Drag coefficient.
+    drivetrain_eff : float
+        The efficiency of the drivetrain. Must be in range 0 < eta <= 1 inclusive.
+    """
+    v_cruising_ms = kmh_to_ms(v_kmh)
+
+    # rolling resistance
+    c_r = coeff_rolling_resistance(p_tire_bar, v_kmh)
+    F_rolling = rolling_resistance_force(c_r, m_kg)
+
+    # drag (constant)
+    F_drag = drag_force(c_d, v_cruising_ms, A_m2)
+
+    # range
+    F_total = F_drag + F_rolling
+    battery_run_time_hrs = time_to_battery_drain(
+        F_total, v_kmh, drivetrain_eff, battery_capacity_kWh
+    )
+    ev_range_km = battery_run_time_hrs * v_cruising_kmh
+    return ev_range_km
+
+
 if __name__ == "__main__":
 
     # example for calculating range

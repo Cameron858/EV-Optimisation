@@ -82,8 +82,8 @@ def drag_force(c, v, a, rho=1.2):
     return c * 0.5 * rho * (v**2) * a
 
 
-def ev_range(F, v_kmh, drivetrain_eff, battery_kWh):
-    """Calculate the range of an EV at a constant velocity.
+def time_to_battery_drain(F, v_kmh, drivetrain_eff, battery_kWh):
+    """Calculate the time for a battery to drain.
 
     This function uses the following assumptions:
     - The vehicle is travelling at constant speed
@@ -104,8 +104,8 @@ def ev_range(F, v_kmh, drivetrain_eff, battery_kWh):
 
     Returns
     -------
-    float
-        Range in [km]
+    t_hrs : float
+        Time in [hrs]
     """
 
     if not 0 < drivetrain_eff <= 1:
@@ -122,7 +122,7 @@ def ev_range(F, v_kmh, drivetrain_eff, battery_kWh):
     P_required_kW = P_required_kW / drivetrain_eff
 
     t_hrs = battery_kWh / P_required_kW
-    return v_kmh * t_hrs
+    return t_hrs
 
 
 def time_to_target_speed(
@@ -207,7 +207,7 @@ if __name__ == "__main__":
 
     # range
     F_total = F_drag + F_rolling
-    ev_range_km = ev_range(
+    ev_range_km = time_to_battery_drain(
         F_total, v_cruising_kmh, drivetrain_eff, battery_capacity_kWh
     )
     print(f"{ev_range_km=:.2f}km")

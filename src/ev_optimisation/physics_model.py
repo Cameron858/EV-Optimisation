@@ -83,13 +83,12 @@ def drag_force(c, v, a, rho=1.2):
 
 
 def time_to_battery_drain(F, v_kmh, drivetrain_eff, battery_kWh):
-    """Calculate the time for a battery to drain.
+    """Calculate the time in [hrs] for a battery to drain at a constant speed.
 
-    This function uses the following assumptions:
-    - The vehicle is travelling at constant speed
-    - All energy consumption is used for maintaining speed
-    - The vehicle is travelling in an infinite flat plane
-    - No energy is lost in getting up to speed, i.e. the vehicle instantaneously accelerates to the given `v_kmh`
+    Method:
+        1. The power required is found from `P = F x v`
+        2. Accounting for drive train efficiency: P = P / n
+        3. Time is found via: t = E[kWh] / P[kW]
 
     Parameters
     -----------

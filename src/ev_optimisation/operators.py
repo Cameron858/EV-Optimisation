@@ -106,7 +106,7 @@ def mutate(vehicle: Vehicle, rate: float, eta: int = 5) -> Vehicle:
     power, capacity = vehicle.motor_power, vehicle.battery_capacity
 
     if random.random() < rate:
-        power = polynomial_mutation(power, Vehicle.MOTOR_WEIGHT_BOUNDS, eta=eta)
+        power = polynomial_mutation(power, Vehicle.MOTOR_POWER_BOUNDS, eta=eta)
 
     if random.random() < rate:
         capacity = polynomial_mutation(

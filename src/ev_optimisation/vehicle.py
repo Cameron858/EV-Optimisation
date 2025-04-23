@@ -14,7 +14,7 @@ class Vehicle:
     MUTATION_PERC_CHANGE: float = field(default=0.05, init=False)
 
     BATTERY_CAPACITY_BOUNDS: tuple[float] = field(default=(30, 150), init=False)  # kWh
-    MOTOR_WEIGHT_BOUNDS: tuple[float] = field(default=(50, 500), init=False)  # kW
+    MOTOR_POWER_BOUNDS: tuple[float] = field(default=(50, 500), init=False)  # kW
 
     BATTERY_WEIGHT_RATIO: float = field(default=6, init=False)  # kg/kWh
     MOTOR_WEIGHT_RATIO: float = field(default=4, init=False)  # kg/kW

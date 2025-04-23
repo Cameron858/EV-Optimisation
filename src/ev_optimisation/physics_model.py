@@ -222,44 +222,5 @@ def range_of_ev(
     battery_run_time_hrs = time_to_battery_drain(
         F_total, v_kmh, drivetrain_eff, battery_capacity_kWh
     )
-    ev_range_km = battery_run_time_hrs * v_cruising_kmh
+    ev_range_km = battery_run_time_hrs * v_kmh
     return ev_range_km
-
-
-if __name__ == "__main__":
-
-    # example for calculating range
-    v_cruising_kmh = 100
-    m_kg = 1500
-    p_tire_bar = 2.5
-    motor_rpm = 6000
-    motor_power_W = 50_000
-    r_tire_m = 0.65
-    A_m2 = 2.2
-    c_d = 0.25
-    gear_ratio = 10
-    drivetrain_eff = 1.0
-    battery_capacity_kWh = 80
-
-    v_cruising_ms = kmh_to_ms(v_cruising_kmh)
-
-    # rolling resistance
-    c_r = coeff_rolling_resistance(p_tire_bar, v_cruising_kmh)
-    F_rolling = rolling_resistance_force(c_r, m_kg)
-
-    # drag (constant)
-    F_drag = drag_force(c_d, v_cruising_ms, A_m2)
-
-    # range
-    F_total = F_drag + F_rolling
-    ev_range_km = time_to_battery_drain(
-        F_total, v_cruising_kmh, drivetrain_eff, battery_capacity_kWh
-    )
-    print(f"{ev_range_km=:.2f}km")
-
-    # acceleration time
-    F_drive = motor_driving_force(
-        motor_power_W, rpm_to_rads(motor_rpm), gear_ratio, r_tire_m
-    )
-    ev_time = time_to_target_speed(F_drive, p_tire_bar, m_kg, A_m2, c_d)
-    print(f"{ev_time=:0.2f}")

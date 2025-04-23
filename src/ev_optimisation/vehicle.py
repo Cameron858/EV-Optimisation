@@ -33,3 +33,17 @@ class Vehicle:
 
     def mass(self) -> kg:
         return self.motor_weight + self.battery_weight
+
+
+@dataclass
+class VehicleConfig:
+    """Configurable metadata for vehicle physics simulations."""
+
+    p_tire_bar: float = 2.5  # Tire pressure [bar]
+    motor_rpm: int = 6000  # Motor max RPM
+    r_tire_m: float = 0.65  # Tire radius [m]
+    A_m2: float = 2.2  # Frontal area [m²]
+    c_d: float = 0.25  # Drag coefficient
+    gear_ratio: float = 10  # Gear ratio (unitless)
+    v_cruising_kmh: float = 100  # Cruising speed [km/h]
+    drivetrain_eff: float = 1.0  # Drivetrain efficiency [0-1]

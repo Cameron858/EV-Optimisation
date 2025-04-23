@@ -9,6 +9,8 @@ from ev_optimisation.physics_model import (
     rpm_to_rads,
     time_to_target_speed,
 )
+import numpy as np
+from functools import partial
 
 
 def vehicle_acc_time(vehicle: Vehicle, config: VehicleConfig) -> float:
@@ -99,3 +101,26 @@ def objective(vehicle: Vehicle, config: VehicleConfig) -> tuple[float]:
 
     # negate the range to turn both into a minimisation problem
     return (-range, time)
+
+
+def evaluate_population(p: list[Vehicle], config: VehicleConfig) -> np.ndarray:
+    """
+    Evaluates a population of vehicles based on a given configuration.
+
+    Parameters
+    ----------
+    p : list[Vehicle]
+        A list of Vehicle objects representing the population to evaluate.
+    config : VehicleConfig
+        Configuration object containing parameters for the evaluation.
+
+    Returns
+    -------
+    np.ndarray
+        An array of objective values for the evaluated population.
+    """
+    apply_objective = partial(objective, config=config)
+
+    p_obj = list(map(apply_objective, p))
+
+    return np.array(p_obj)

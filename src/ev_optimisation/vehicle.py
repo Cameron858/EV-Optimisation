@@ -34,6 +34,13 @@ class Vehicle:
     def mass(self) -> kg:
         return self.motor_weight + self.battery_weight
 
+    def __repr__(self) -> str:
+        return (
+            f"Vehicle(motor_power={self.motor_power:0.2f} kW, "
+            f"battery_capacity={self.battery_capacity:0.2f} kWh, "
+            f"mass={self.mass():0.2f} kg)"
+        )
+
 
 @dataclass
 class VehicleConfig:

@@ -28,11 +28,12 @@ def vehicle_acc_time(vehicle: Vehicle, config: VehicleConfig) -> float:
         The time (in seconds) required for the vehicle to reach the target speed.
     """
     F_drive = motor_driving_force(
-        vehicle.motor_power / 1000,
+        vehicle.motor_power * 1000,
         rpm_to_rads(config.motor_rpm),
         config.gear_ratio,
         config.r_tire_m,
     )
+
     time = time_to_target_speed(
         F_drive, config.p_tire_bar, vehicle.mass(), config.A_m2, config.c_d
     )

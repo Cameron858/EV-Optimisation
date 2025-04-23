@@ -131,7 +131,7 @@ def time_to_target_speed(
     A_m2,
     c_d,
     v_target_kmh=100,
-    dt=0.01,
+    dt=0.1,
 ):
     """Calculate the time required for an EV to reach a target speed.
 

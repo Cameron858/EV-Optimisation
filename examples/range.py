@@ -29,7 +29,8 @@ if __name__ == "__main__":
 
     # range
     F_total = F_drag + F_rolling
-    ev_range_km = time_to_battery_drain(
+    battery_run_time_hrs = time_to_battery_drain(
         F_total, v_cruising_kmh, drivetrain_eff, battery_capacity_kWh
     )
+    ev_range_km = battery_run_time_hrs * v_cruising_kmh
     print(f"{ev_range_km=:.2f}km")

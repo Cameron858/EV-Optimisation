@@ -32,7 +32,7 @@ class Vehicle:
         return self.battery_capacity * self.BATTERY_WEIGHT_RATIO
 
     def mass(self) -> kg:
-        return self.motor_weight + self.battery_weight
+        return round(self.motor_weight + self.battery_weight, 2)
 
     def __repr__(self) -> str:
         return (

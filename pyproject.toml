@@ -9,9 +9,6 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.11"
 numpy = "^2.2.2"
-
-
-[tool.poetry.group.dev.dependencies]
 pytest = "^8.3.4"
 pytest-cov = "^6.0.0"
 pytest-mock = "^3.14.0"

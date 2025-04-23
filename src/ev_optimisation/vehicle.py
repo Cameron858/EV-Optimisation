@@ -1,7 +1,5 @@
 import logging
-import random
 from dataclasses import dataclass, field
-from .operators import polynomial_mutation
 
 type kg = float | int
 type kW = float | int
@@ -35,25 +33,3 @@ class Vehicle:
 
     def mass(self) -> kg:
         return self.motor_weight + self.battery_weight
-
-    def mutate(self, rate: float, eta: int = 5) -> None:
-        """Mutate the vehicle's attributes inplace independently using polynomial mutation.
-
-        Parameters
-        -----------
-        eta : int, optional
-            The distribution index that controls the extent of the mutation.
-            Higher values of `eta` result in smaller mutations. Default is 5.
-        """
-        if not 0 <= rate <= 1:
-            raise ValueError(f"Mutation rate must be in range [0, 1]. Given: {rate}")
-
-        if random.random() < rate:
-            self.motor_power = polynomial_mutation(
-                self.motor_power, self.MOTOR_WEIGHT_BOUNDS
-            )
-
-        if random.random() < rate:
-            self.battery_capacity = polynomial_mutation(
-                self.battery_capacity, self.BATTERY_CAPACITY_BOUNDS
-            )

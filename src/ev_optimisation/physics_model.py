@@ -82,14 +82,13 @@ def drag_force(c, v, a, rho=1.2):
     return c * 0.5 * rho * (v**2) * a
 
 
-def ev_range(F, v_kmh, drivetrain_eff, battery_kWh):
-    """Calculate the range of an EV at a constant velocity.
+def time_to_battery_drain(F, v_kmh, drivetrain_eff, battery_kWh):
+    """Calculate the time in [hrs] for a battery to drain at a constant speed.
 
-    This function uses the following assumptions:
-    - The vehicle is travelling at constant speed
-    - All energy consumption is used for maintaining speed
-    - The vehicle is travelling in an infinite flat plane
-    - No energy is lost in getting up to speed, i.e. the vehicle instantaneously accelerates to the given `v_kmh`
+    Method:
+        1. The power required is found from `P = F x v`
+        2. Accounting for drive train efficiency: P = P / n
+        3. Time is found via: t = E[kWh] / P[kW]
 
     Parameters
     -----------
@@ -104,8 +103,8 @@ def ev_range(F, v_kmh, drivetrain_eff, battery_kWh):
 
     Returns
     -------
-    float
-        Range in [km]
+    t_hrs : float
+        Time in [hrs]
     """
 
     if not 0 < drivetrain_eff <= 1:
@@ -122,7 +121,7 @@ def ev_range(F, v_kmh, drivetrain_eff, battery_kWh):
     P_required_kW = P_required_kW / drivetrain_eff
 
     t_hrs = battery_kWh / P_required_kW
-    return v_kmh * t_hrs
+    return t_hrs
 
 
 def time_to_target_speed(
@@ -181,25 +180,38 @@ def time_to_target_speed(
     return t
 
 
-if __name__ == "__main__":
+def range_of_ev(
+    v_kmh, p_tire_bar, m_kg, battery_capacity_kWh, c_d, A_m2, drivetrain_eff
+):
+    """Calculate the range in [km] of a vehicle.
 
-    # example for calculating range
-    v_cruising_kmh = 100
-    m_kg = 1500
-    p_tire_bar = 2.5
-    motor_rpm = 6000
-    motor_power_W = 50_000
-    r_tire_m = 0.65
-    A_m2 = 2.2
-    c_d = 0.25
-    gear_ratio = 10
-    drivetrain_eff = 1.0
-    battery_capacity_kWh = 80
+    This function uses the following assumptions:
+    - The vehicle is travelling at constant speed
+    - All energy consumption is used for maintaining speed
+    - The vehicle is travelling in an infinite flat plane
+    - No energy is lost in getting up to speed, i.e. the vehicle instantaneously accelerates to the given `v_kmh`
 
-    v_cruising_ms = kmh_to_ms(v_cruising_kmh)
+    Parameters
+    -----------
+    v_kmh : float
+        The cruising speed of the vehicle in [kmh-1]
+    p_tire_bar : float
+        Tire pressure in [bar].
+    m_kg : float
+        Mass of the vehicle in [kg].
+    battery_kWh : float
+        The capacity of the battery in [kWh]
+    A_m2 : float
+        Cross-sectional area of the vehicle in [m2].
+    c_d : float
+        Drag coefficient.
+    drivetrain_eff : float
+        The efficiency of the drivetrain. Must be in range 0 < eta <= 1 inclusive.
+    """
+    v_cruising_ms = kmh_to_ms(v_kmh)
 
     # rolling resistance
-    c_r = coeff_rolling_resistance(p_tire_bar, v_cruising_kmh)
+    c_r = coeff_rolling_resistance(p_tire_bar, v_kmh)
     F_rolling = rolling_resistance_force(c_r, m_kg)
 
     # drag (constant)
@@ -207,14 +219,8 @@ if __name__ == "__main__":
 
     # range
     F_total = F_drag + F_rolling
-    ev_range_km = ev_range(
-        F_total, v_cruising_kmh, drivetrain_eff, battery_capacity_kWh
+    battery_run_time_hrs = time_to_battery_drain(
+        F_total, v_kmh, drivetrain_eff, battery_capacity_kWh
     )
-    print(f"{ev_range_km=:.2f}km")
-
-    # acceleration time
-    F_drive = motor_driving_force(
-        motor_power_W, rpm_to_rads(motor_rpm), gear_ratio, r_tire_m
-    )
-    ev_time = time_to_target_speed(F_drive, p_tire_bar, m_kg, A_m2, c_d)
-    print(f"{ev_time=:0.2f}")
+    ev_range_km = battery_run_time_hrs * v_kmh
+    return ev_range_km

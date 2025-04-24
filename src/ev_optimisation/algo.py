@@ -1,4 +1,5 @@
 import random
+from ev_optimisation.operators import mutate, sbx_crossover
 from ev_optimisation.vehicle import Vehicle
 import numpy as np
 
@@ -222,3 +223,68 @@ def tournament_select(
     winner_abs_i = selected_i[winner_rel_i]
 
     return winner_abs_i
+
+
+def generate_offspring(
+    p: np.ndarray,
+    p_obj: np.ndarray,
+    fronts: np.ndarray,
+    crowding_distances: np.ndarray,
+    crossover_rate: float = 0.9,
+    mutate_rate: float = 0.05,
+) -> list[Vehicle]:
+    """
+    Generate offspring using tournament selection, SBX crossover, and polynomial mutation.
+
+    Parameters
+    ----------
+    p : np.ndarray
+        Current population.
+    p_obj : np.ndarray
+        Objective values of the current population.
+    fronts : np.ndarray
+        Array indicating the front number for each individual.
+    crowding_distances : np.ndarray
+        Crowding distances for each individual.
+    bounds : tuple
+        Tuple containing lower and upper bounds (both np.ndarray) for variables.
+    sbx_prob : float, optional
+        Probability of performing SBX crossover, by default 0.9.
+    mutation_prob : float, optional
+        Probability of applying polynomial mutation to each child, by default 0.05.
+
+    Returns
+    -------
+    list[Vehicle]
+        New offspring population of the same size as the original.
+    """
+    mating_pool = []
+    while len(mating_pool) < len(p):
+
+        # select a winner
+        winner_i = tournament_select(p_obj, fronts, crowding_distances)
+        mating_pool.append(p[winner_i])
+
+    assert len(mating_pool) == len(p)
+
+    # breed in pairs
+    Q = []
+    for i in range(0, len(p), 2):
+
+        p1 = mating_pool[i]
+        p2 = mating_pool[i + 1]
+
+        # roll for crossover, else propagate parents as children
+        if np.random.rand() < crossover_rate:
+            children = sbx_crossover(p1, p2)
+        else:
+            children = p1, p2
+
+        # independantly mutate children
+        children = [mutate(c, mutate_rate) for c in children]
+
+        Q.extend(children)
+
+    assert len(Q) == len(p)
+
+    return Q

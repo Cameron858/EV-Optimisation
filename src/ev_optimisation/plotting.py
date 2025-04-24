@@ -20,9 +20,9 @@ def plot_population(p: list[Vehicle], marker_scaler=75) -> tuple[plt.Figure, Any
     plt.scatter(x=powers, y=capacities, s=sizes)
 
     # annotate the masses
-    for x, y, mass in zip(powers, capacities, masses):
+    for i, (x, y, mass) in enumerate(zip(powers, capacities, masses)):
         plt.annotate(
-            f"{mass:.0f}kg",
+            f"{i}: {mass:.0f}kg",
             (x, y),
             textcoords="offset points",
             xytext=(5, 5),
@@ -31,7 +31,7 @@ def plot_population(p: list[Vehicle], marker_scaler=75) -> tuple[plt.Figure, Any
         )
 
     # update axis labels
-    plt.title("Power [kW] vs Capacity [kWh] (Size = Mass, Label = Mass)")
+    plt.title("Power [kW] vs Capacity [kWh] (Size = Mass, Label = Index: Mass)")
     plt.xlabel("Motor Power [kW]")
     plt.ylabel("Battery Capacity [kWh]")
     plt.grid(True)

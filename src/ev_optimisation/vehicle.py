@@ -41,6 +41,9 @@ class Vehicle:
             f"mass={self.mass():0.2f} kg)"
         )
 
+    def to_array(self):
+        return np.array((self.motor_power, self.battery_capacity), dtype=float)
+
 
 @dataclass
 class VehicleConfig:

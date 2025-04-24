@@ -2,6 +2,7 @@ import random
 from typing import Callable
 
 from ev_optimisation.vehicle import Vehicle
+import numpy as np
 
 
 def _blx_alpha_bounds(gene_1: float, gene_2: float, alpha: float):
@@ -114,3 +115,43 @@ def mutate(vehicle: Vehicle, rate: float, eta: int = 5) -> Vehicle:
         )
 
     return Vehicle(motor_power=power, battery_capacity=capacity)
+
+
+def sbx_crossover(parent1, parent2, eta=20) -> tuple[Vehicle]:
+    """
+    Performs Simulated Binary Crossover (SBX) on two parent `Vehicle` objects.
+
+    Parameters
+    ----------
+    parent1 : Vehicle
+        The first parent individual.
+    parent2 : Vehicle
+        The second parent individual.
+    eta : int, optional
+        The distribution index, which controls the spread of offspring solutions.
+        Higher values result in offspring closer to the parents. Default is 20.
+
+    Returns
+    -------
+    tuple[Vehicle]
+        A tuple containing two offspring `Vehicle` objects generated from the
+        crossover operation.
+    """
+    eta = 5
+    u = np.random.uniform()
+
+    exponent = 1 / (eta + 1)
+
+    beta = np.where(u <= 0.5, (2 * u) ** exponent, (2 * (1 - u)) ** -exponent)
+
+    c1_values = 0.5 * (
+        (1 + beta) * parent1.to_array() + (1 - beta) * parent2.to_array()
+    )
+    c2_values = 0.5 * (
+        (1 - beta) * parent1.to_array() + (1 + beta) * parent2.to_array()
+    )
+
+    c1 = Vehicle(*c1_values)
+    c2 = Vehicle(*c2_values)
+
+    return c1, c2

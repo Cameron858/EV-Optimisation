@@ -1,6 +1,7 @@
 import random
 from ev_optimisation.operators import mutate, sbx_crossover
-from ev_optimisation.vehicle import Vehicle
+from ev_optimisation.pipelines import evaluate_population
+from ev_optimisation.vehicle import Vehicle, VehicleConfig
 import numpy as np
 
 
@@ -288,3 +289,41 @@ def generate_offspring(
     assert len(Q) == len(p)
 
     return Q
+
+
+def propogate_species(
+    p: list[Vehicle], q: list[Vehicle], config: VehicleConfig
+) -> list[Vehicle]:
+    """
+    Combine two populations of vehicles, evaluates their fitness, and selects
+    the top half based on non-dominated sorting and crowding distance.
+
+    Parameters
+    ----------
+    p : list[Vehicle]
+        The first population of vehicles.
+    q : list[Vehicle]
+        The second population of vehicles.
+    config : VehicleConfig
+        Configuration object containing parameters for vehicle evaluation.
+
+    Returns
+    -------
+    list[Vehicle]
+        The selected top half of the combined population after evaluation.
+    """
+    assert len(p) == len(q)
+
+    r = [*p, *q]
+
+    r_obj = evaluate_population(r, config)
+    r_fronts = assign_fronts(r_obj)
+    r_fronts = flatten_fronts(r_obj, r_fronts)
+    r_crowding_dists = calculate_crowding_distance(r_obj)
+
+    x = np.column_stack((r_fronts, r_crowding_dists))
+    i = np.lexsort((-x[:, 1], x[:, 0]))
+    top_n_indices = i[: i.shape[0] // 2]
+    p = np.array(r)[top_n_indices]
+
+    return p

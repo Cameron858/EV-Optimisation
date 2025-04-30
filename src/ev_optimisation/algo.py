@@ -291,7 +291,7 @@ def generate_offspring(
     return Q
 
 
-def propogate_species(
+def propagate_species(
     p: list[Vehicle], q: list[Vehicle], config: VehicleConfig
 ) -> list[Vehicle]:
     """

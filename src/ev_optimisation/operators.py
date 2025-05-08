@@ -42,7 +42,7 @@ def crossover(
     )
 
 
-def polynomial_mutation(x: float, bounds: tuple, eta=5) -> float:
+def polynomial_mutation(x: float, bounds: tuple, eta: int = 20) -> float:
     """
     Perform polynomial mutation on a given real encoded value.
 
@@ -57,7 +57,7 @@ def polynomial_mutation(x: float, bounds: tuple, eta=5) -> float:
         (bounds[0] is the lower bound, bounds[1] is the upper bound).
     eta : int, optional
         The distribution index that controls the extent of the mutation.
-        Higher values of `eta` result in smaller mutations. Default is 5.
+        Higher values of `eta` result in smaller mutations. Default is 20.
 
     Returns
     -------
@@ -77,7 +77,7 @@ def polynomial_mutation(x: float, bounds: tuple, eta=5) -> float:
     return x_mutated
 
 
-def mutate(vehicle: Vehicle, rate: float, eta: int = 5) -> Vehicle:
+def mutate(vehicle: Vehicle, rate: float, eta: int = 20) -> Vehicle:
     """
     Mutate the vehicle's attributes independently using polynomial mutation. Return new instance.
 
@@ -89,7 +89,7 @@ def mutate(vehicle: Vehicle, rate: float, eta: int = 5) -> Vehicle:
         The probability of mutation for each attribute. Must be in the range [0, 1].
     eta : int, optional
         The distribution index that controls the extent of the mutation.
-        Higher values of `eta` result in smaller mutations. Default is 5.
+        Higher values of `eta` result in smaller mutations. Default is 20.
 
     Returns
     -------

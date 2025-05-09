@@ -363,7 +363,6 @@ def optimise_ev_population(
     )
 
     for generation in range(n_gens):
-        print(f"Generation {generation + 1}/{n_gens}")
 
         # Evaluate the population
         p_obj = evaluate_population(p, config)

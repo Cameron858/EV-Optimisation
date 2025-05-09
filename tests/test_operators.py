@@ -1,3 +1,4 @@
+from itertools import permutations
 from ev_optimisation.vehicle import Vehicle
 from ev_optimisation.operators import mutate, sbx_crossover
 import numpy as np
@@ -104,3 +105,15 @@ def test_that_eta_value_effects_the_diversty_of_sbx_crossover_offspring():
     assert np.linalg.norm(c2_low.to_array() - parent2.to_array()) > np.linalg.norm(
         c2_high.to_array() - parent2.to_array()
     )
+
+
+def test_that_sbx_crossover_exhibits_randomness():
+
+    parent1 = Vehicle(motor_power=100, battery_capacity=50)
+    parent2 = Vehicle(motor_power=200, battery_capacity=100)
+
+    c1, c2 = sbx_crossover(parent1, parent2)
+    c3, c4 = sbx_crossover(parent1, parent2)
+
+    for ci, cj in permutations([c1, c2, c3, c4], 2):
+        assert not np.allclose(ci.to_array(), cj.to_array())

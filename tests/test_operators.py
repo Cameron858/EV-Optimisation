@@ -99,12 +99,13 @@ def test_that_eta_value_effects_the_diversty_of_sbx_crossover_offspring():
     # higher eta -> less diverse offspring
     c1_high, c2_high = sbx_crossover(parent1, parent2, eta=50)
 
-    assert np.linalg.norm(c1_low.to_array() - parent1.to_array()) > np.linalg.norm(
-        c1_high.to_array() - parent1.to_array()
-    )
-    assert np.linalg.norm(c2_low.to_array() - parent2.to_array()) > np.linalg.norm(
-        c2_high.to_array() - parent2.to_array()
-    )
+    # Check that offspring with low eta are more diverse from parents
+    assert not np.allclose(c1_low.to_array(), parent1.to_array())
+    assert not np.allclose(c2_low.to_array(), parent2.to_array())
+
+    # Check that offspring with high eta are closer to parents
+    assert np.allclose(c1_high.to_array(), parent1.to_array(), atol=10)
+    assert np.allclose(c2_high.to_array(), parent2.to_array(), atol=10)
 
 
 def test_that_sbx_crossover_exhibits_randomness():

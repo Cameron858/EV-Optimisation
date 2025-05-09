@@ -79,7 +79,7 @@ def mutate(vehicle: Vehicle, rate: float, eta: int = 20) -> Vehicle:
     return Vehicle(motor_power=power, battery_capacity=capacity)
 
 
-def sbx_crossover(parent1, parent2, eta=20) -> tuple[Vehicle]:
+def sbx_crossover(parent1: Vehicle, parent2: Vehicle, eta=20) -> tuple[Vehicle]:
     """
     Performs Simulated Binary Crossover (SBX) on two parent `Vehicle` objects.
 

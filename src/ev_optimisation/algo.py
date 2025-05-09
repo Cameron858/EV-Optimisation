@@ -327,3 +327,40 @@ def propagate_species(
     p = np.array(r)[top_n_indices]
 
     return p
+
+
+def optimise_ev_population(n_pop, n_gens, config) -> list[Vehicle]:
+    """
+    Optimise an EV population using NSGA-II.
+
+    Parameters
+    ----------
+    n_pop : int
+        Number of individuals in the population.
+    n_gens : int
+        Number of generations to evolve.
+    config : VehicleConfig
+        Configuration for the vehicles.
+
+    Returns
+    -------
+    numpy.ndarray
+        Final population after optimisation.
+    """
+    p = create_population(n_pop)
+
+    for generation in range(n_gens):
+        print(f"Generation {generation + 1}/{n_gens}")
+
+        # Evaluate the population
+        p_obj = evaluate_population(p, config)
+
+        # Assign fronts and calculate crowding distances
+        fronts = assign_fronts(p_obj)
+        crowding_distances = calculate_crowding_distance(p_obj)
+
+        # Generate offspring and propagate species
+        q = generate_offspring(p, p_obj, fronts, crowding_distances)
+        p = propagate_species(p, q, config)
+
+    return p

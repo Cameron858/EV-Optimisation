@@ -86,3 +86,21 @@ def test_that_sbx_crossover_produces_diverse_offspring_for_low_eta_value():
 
     assert not np.allclose(c1.to_array(), parent1.to_array())
     assert not np.allclose(c2.to_array(), parent2.to_array())
+
+
+def test_that_eta_value_effects_the_diversty_of_sbx_crossover_offspring():
+    parent1 = Vehicle(motor_power=100, battery_capacity=50)
+    parent2 = Vehicle(motor_power=200, battery_capacity=100)
+
+    # lower eta -> more diverse offspring
+    c1_low, c2_low = sbx_crossover(parent1, parent2, eta=1)
+
+    # higher eta -> less diverse offspring
+    c1_high, c2_high = sbx_crossover(parent1, parent2, eta=50)
+
+    assert np.linalg.norm(c1_low.to_array() - parent1.to_array()) > np.linalg.norm(
+        c1_high.to_array() - parent1.to_array()
+    )
+    assert np.linalg.norm(c2_low.to_array() - parent2.to_array()) > np.linalg.norm(
+        c2_high.to_array() - parent2.to_array()
+    )

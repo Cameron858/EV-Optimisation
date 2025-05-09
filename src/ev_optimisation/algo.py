@@ -329,7 +329,9 @@ def propagate_species(
     return p
 
 
-def optimise_ev_population(n_pop, n_gens, config) -> list[Vehicle]:
+def optimise_ev_population(
+    n_pop, n_gens, config, initial_population=None
+) -> list[Vehicle]:
     """
     Optimise an EV population using NSGA-II.
 
@@ -341,13 +343,19 @@ def optimise_ev_population(n_pop, n_gens, config) -> list[Vehicle]:
         Number of generations to evolve.
     config : VehicleConfig
         Configuration for the vehicles.
+    initial_population : list[Vehicle], optional
+        An optional initial population of vehicles. If not provided, a new population will be created.
 
     Returns
     -------
-    numpy.ndarray
+    list[Vehicle]
         Final population after optimisation.
     """
-    p = create_population(n_pop)
+    p = (
+        initial_population
+        if initial_population is not None
+        else create_population(n_pop)
+    )
 
     for generation in range(n_gens):
         print(f"Generation {generation + 1}/{n_gens}")

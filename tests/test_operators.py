@@ -74,3 +74,15 @@ def test_that_sbx_crossover_is_symmetrical(mocker):
 
     assert np.allclose(c1.to_array(), c4.to_array())
     assert np.allclose(c2.to_array(), c3.to_array())
+
+
+def test_that_sbx_crossover_produces_diverse_offspring_for_low_eta_value():
+
+    parent1 = Vehicle(motor_power=100, battery_capacity=50)
+    parent2 = Vehicle(motor_power=200, battery_capacity=100)
+
+    # a low eta values ensures that the child are far from the parents
+    c1, c2 = sbx_crossover(parent1, parent2, eta=1)
+
+    assert not np.allclose(c1.to_array(), parent1.to_array())
+    assert not np.allclose(c2.to_array(), parent2.to_array())

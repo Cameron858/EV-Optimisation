@@ -330,19 +330,19 @@ def propagate_species(
 
 
 def optimise_ev_population(
-    n_pop, n_gens, config, initial_population=None
+    config, n_gens, n_pop=None, initial_population=None
 ) -> list[Vehicle]:
     """
     Optimise an EV population using NSGA-II.
 
     Parameters
     ----------
-    n_pop : int
-        Number of individuals in the population.
-    n_gens : int
-        Number of generations to evolve.
     config : VehicleConfig
         Configuration for the vehicles.
+    n_gens : int
+        Number of generations to evolve.
+    n_pop : int, optional
+        Number of individuals in the population. If `initial_population` is provided, this is ignored.
     initial_population : list[Vehicle], optional
         An optional initial population of vehicles. If not provided, a new population will be created.
 
@@ -351,6 +351,11 @@ def optimise_ev_population(
     list[Vehicle]
         Final population after optimisation.
     """
+    if initial_population is not None:
+        n_pop = len(initial_population)
+    elif n_pop is None:
+        raise ValueError("Either `n_pop` or `initial_population` must be provided.")
+
     p = (
         initial_population
         if initial_population is not None

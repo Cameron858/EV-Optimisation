@@ -1,5 +1,6 @@
 from ev_optimisation.vehicle import Vehicle
-from ev_optimisation.operators import mutate
+from ev_optimisation.operators import mutate, sbx_crossover
+import numpy as np
 import pytest
 
 
@@ -58,3 +59,18 @@ def test_that_one_mutation_rate_always_produces_mutations(mocker):
     # core attributes
     assert v.motor_power != before_motor_power
     assert v.battery_capacity != before_battery_capacity
+
+
+def test_that_sbx_crossover_is_symmetrical(mocker):
+
+    # Ensure the crossover operation is deterministic for testing
+    mocker.patch("numpy.random.uniform", return_value=0.5)
+
+    parent1 = Vehicle(motor_power=100, battery_capacity=50)
+    parent2 = Vehicle(motor_power=200, battery_capacity=100)
+
+    c1, c2 = sbx_crossover(parent1, parent2)
+    c3, c4 = sbx_crossover(parent2, parent1)
+
+    assert np.allclose(c1.to_array(), c4.to_array())
+    assert np.allclose(c2.to_array(), c3.to_array())

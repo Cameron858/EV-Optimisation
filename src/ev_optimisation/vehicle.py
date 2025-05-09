@@ -25,22 +25,10 @@ class Vehicle:
     logger: logging.Logger = field(default=logging.getLogger("vehicle"))
 
     def __post_init__(self):
-        original_motor_power = self.motor_power
-        original_battery_capacity = self.battery_capacity
-
         self.motor_power = np.clip(self.motor_power, *self.MOTOR_POWER_BOUNDS)
         self.battery_capacity = np.clip(
             self.battery_capacity, *self.BATTERY_CAPACITY_BOUNDS
         )
-
-        if self.motor_power != original_motor_power:
-            self.logger.warning(
-                f"motor_power clipped from {original_motor_power} to {self.motor_power}"
-            )
-        if self.battery_capacity != original_battery_capacity:
-            self.logger.warning(
-                f"battery_capacity clipped from {original_battery_capacity} to {self.battery_capacity}"
-            )
 
     @property
     def motor_weight(self) -> kg:

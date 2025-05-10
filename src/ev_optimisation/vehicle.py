@@ -1,6 +1,6 @@
-import logging
 from dataclasses import dataclass, field
 import numpy as np
+import pandas as pd
 
 type kg = float | int
 type kW = float | int
@@ -71,6 +71,19 @@ class GenerationResult:
 
     generation: int
     population: list[Vehicle]
-    fronts: dict[int, set[int]]
+    fronts: np.ndarray
     objectives: np.ndarray
     distances: np.ndarray
+
+    def to_pandas(self) -> pd.DataFrame:
+        data = {
+            "Generation": [self.generation] * len(self.population),
+            "Motor Power (kW)": [v.motor_power for v in self.population],
+            "Battery Capacity (kWh)": [v.battery_capacity for v in self.population],
+            "Mass (kg)": [v.mass() for v in self.population],
+            "Front": self.fronts,
+            "Crowding Distance": self.distances.tolist(),
+            "Range": self.objectives[:, 0],
+            "Time": self.objectives[:, 1],
+        }
+        return pd.DataFrame(data)

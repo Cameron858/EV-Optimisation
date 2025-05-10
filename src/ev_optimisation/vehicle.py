@@ -52,7 +52,7 @@ class Vehicle:
         return np.array((self.motor_power, self.battery_capacity), dtype=float)
 
 
-@dataclass
+@dataclass(frozen=True)
 class VehicleConfig:
     """Configurable metadata for vehicle physics simulations."""
 

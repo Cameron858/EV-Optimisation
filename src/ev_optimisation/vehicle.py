@@ -22,7 +22,6 @@ class Vehicle:
 
     motor_power: kW
     battery_capacity: kWh
-    logger: logging.Logger = field(default=logging.getLogger("vehicle"))
 
     def __post_init__(self):
         self.motor_power = np.clip(self.motor_power, *self.MOTOR_POWER_BOUNDS)

@@ -335,6 +335,29 @@ def propagate_species(
     return p
 
 
+def population_to_array(population: list[Vehicle]) -> np.ndarray:
+    """
+    Convert a population of vehicles into a numpy array.
+
+    Parameters
+    ----------
+    population : list[Vehicle]
+        A list of Vehicle objects. Each Vehicle object should have attributes:
+        - motor_power: float
+        - battery_capacity: float
+        - mass(): callable that returns the mass of the vehicle as a float.
+
+    Returns
+    -------
+    np.ndarray
+        A 2D numpy array where each row represents a vehicle and contains:
+        - motor_power (float)
+        - battery_capacity (float)
+        - mass (float)
+    """
+    return np.array([[v.motor_power, v.battery_capacity, v.mass()] for v in population])
+
+
 def optimise_ev_population(
     config, n_gens, n_pop=None, initial_population=None
 ) -> list[Vehicle]:

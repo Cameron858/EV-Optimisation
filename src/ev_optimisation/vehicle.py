@@ -7,7 +7,7 @@ type kW = float | int
 type kWh = float | int
 
 
-@dataclass
+@dataclass(frozen=True)
 class Vehicle:
     # not to be confused with mutation rate, which is determined outside this class
     # This defines the +-% that a mutation can possible change by

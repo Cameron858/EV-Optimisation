@@ -1,7 +1,7 @@
 import random
 from ev_optimisation.operators import mutate, sbx_crossover
 from ev_optimisation.pipelines import evaluate_population
-from ev_optimisation.vehicle import Vehicle, VehicleConfig
+from ev_optimisation.vehicle import Vehicle, VehicleConfig, GenerationResult
 import numpy as np
 
 
@@ -360,7 +360,7 @@ def population_to_array(population: list[Vehicle]) -> np.ndarray:
 
 def optimise_ev_population(
     config, n_gens, n_pop=None, initial_population=None
-) -> list[Vehicle]:
+) -> dict[int, GenerationResult]:
     """
     Optimise an EV population using NSGA-II.
 
@@ -377,8 +377,8 @@ def optimise_ev_population(
 
     Returns
     -------
-    list[Vehicle]
-        Final population after optimisation.
+    dict[int, GenerationResult]
+        A dictionary where the keys are generation numbers and the values are GenerationResult objects
     """
     if initial_population is not None:
         n_pop = len(initial_population)
@@ -391,6 +391,7 @@ def optimise_ev_population(
         else create_population(n_pop)
     )
 
+    result = {}
     for generation in range(n_gens):
 
         # Evaluate the population
@@ -400,8 +401,16 @@ def optimise_ev_population(
         fronts = assign_fronts(p_obj)
         crowding_distances = calculate_crowding_distance(p_obj)
 
+        result[generation] = GenerationResult(
+            generation=generation,
+            population=p,
+            fronts=flatten_fronts(p_obj, fronts),
+            objectives=p_obj,
+            distances=crowding_distances,
+        )
+
         # Generate offspring and propagate species
         q = generate_offspring(p, p_obj, fronts, crowding_distances)
         p = propagate_species(p, q, config)
 
-    return p
+    return result

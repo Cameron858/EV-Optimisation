@@ -64,3 +64,14 @@ class VehicleConfig:
     gear_ratio: float = 10  # Gear ratio (unitless)
     v_cruising_kmh: float = 100  # Cruising speed [km/h]
     drivetrain_eff: float = 1.0  # Drivetrain efficiency [0-1]
+
+
+@dataclass(frozen=True)
+class GenerationResult:
+    """Represents the result of a single generation in the optimisation process."""
+
+    generation: int
+    population: list[Vehicle]
+    fronts: dict[int, set[int]]
+    objectives: np.ndarray
+    distances: np.ndarray

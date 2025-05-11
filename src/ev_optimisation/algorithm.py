@@ -392,7 +392,7 @@ def optimise_ev_population(
     )
 
     result = {}
-    for generation in range(n_gens):
+    for generation in range(n_gens + 1):
 
         # Evaluate the population
         p_obj = evaluate_population(p, config)

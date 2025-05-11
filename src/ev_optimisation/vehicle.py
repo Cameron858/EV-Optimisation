@@ -24,9 +24,14 @@ class Vehicle:
     battery_capacity: kWh
 
     def __post_init__(self):
-        self.motor_power = np.clip(self.motor_power, *self.MOTOR_POWER_BOUNDS)
-        self.battery_capacity = np.clip(
-            self.battery_capacity, *self.BATTERY_CAPACITY_BOUNDS
+        # this way bypasses the immutability
+        object.__setattr__(
+            self, "motor_power", np.clip(self.motor_power, *self.MOTOR_POWER_BOUNDS)
+        )
+        object.__setattr__(
+            self,
+            "battery_capacity",
+            np.clip(self.battery_capacity, *self.BATTERY_CAPACITY_BOUNDS),
         )
 
     @property

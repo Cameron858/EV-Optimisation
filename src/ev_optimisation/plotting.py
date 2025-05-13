@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from ev_optimisation.vehicle import GenerationResult, Vehicle
 from pyprojroot import here
-import os
 import plotly.graph_objects as go
 
 

@@ -2,6 +2,8 @@ from typing import Any
 import matplotlib.pyplot as plt
 import numpy as np
 from ev_optimisation.vehicle import GenerationResult, Vehicle
+from pyprojroot import here
+import os
 import plotly.graph_objects as go
 
 
@@ -143,3 +145,28 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
             )
 
     return fig
+
+
+def save_plotly_figure(fig: go.Figure, file_name: str) -> None:
+    """
+    Save a Plotly figure to a file in the default "figures" directory.
+
+    Parameters
+    ----------
+    fig : plotly.graph_objects.Figure
+        The Plotly figure to save.
+    file_name : str
+        The file name where the figure will be saved. The format is inferred from the file extension.
+
+    Notes
+    -----
+    Supported file formats include: 'png', 'jpg', 'jpeg', 'webp', 'svg', 'pdf', 'eps', 'json', etc.
+    """
+    figures_dir = here() / "figures"
+    file_path = figures_dir / file_name
+
+    try:
+        fig.write_image(str(file_path))
+        print(f"Figure saved successfully to {file_path}")
+    except ValueError as e:
+        print(f"Error saving figure: {e}")

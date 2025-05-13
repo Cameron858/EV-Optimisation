@@ -162,6 +162,8 @@ def save_plotly_figure(fig: go.Figure, file_name: str) -> None:
     -----
     Supported file formats include: 'png', 'jpg', 'jpeg', 'webp', 'svg', 'pdf', 'eps', 'json', etc.
     """
+    import kaleido
+
     figures_dir = here() / "figures"
     file_path = figures_dir / file_name
 

@@ -106,15 +106,35 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
         offset = 0.1
         return 75 * ((masses / masses.max()) ** 2 + offset)
 
-    if not fronts:
-        marker_sizes = calculate_marker_sizes(pop_array[:, 2])
+    def add_scatter(fig: go.Figure, data: np.ndarray, trace_name: str):
+        """
+        Add a scatter plot to the given Plotly figure inplace.
+
+        Parameters
+        ----------
+        fig : go.Figure
+            The Plotly figure to which the scatter plot will be added.
+        data : np.ndarray
+            A 2D numpy array where:
+            - Column 0 represents the x-axis values (Power in kW).
+            - Column 1 represents the y-axis values (Capacity in kWh).
+            - Columns 2 and beyond represent metadata (Mass in kg, Range in km, Time in s).
+        trace_name : str
+            The name of the trace to be displayed in the legend.
+
+        Returns
+        -------
+        None
+            This function modifies the input `fig` in place by adding a scatter trace.
+        """
+        marker_sizes = calculate_marker_sizes(data[:, 2])
         fig.add_trace(
             go.Scatter(
-                x=pop_array[:, 0],
-                y=pop_array[:, 1],
+                x=data[:, 0],
+                y=data[:, 1],
                 mode="markers",
                 marker={"size": marker_sizes},
-                name="",
+                name=trace_name,
                 hovertemplate=(
                     "Power: %{x:.2f} kW<br>"
                     "Capacity: %{y:.2f} kWh<br>"
@@ -122,10 +142,13 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
                     "Range: %{meta[1]:.2f} km<br>"
                     "Time: %{meta[2]:.2f} s<br>"
                 ),
-                meta=pop_array[:, 2:],
+                meta=data[:, 2:],
                 showlegend=True,
             )
         )
+
+    if not fronts:
+        add_scatter(fig, pop_array, "")
     else:
         pop_array = np.column_stack((pop_array, result.fronts))
 
@@ -133,26 +156,7 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
             front_idxs = np.where(pop_array[:, -1] == front)
             front_members = pop_array[front_idxs]
 
-            marker_sizes = calculate_marker_sizes(front_members[:, 2])
-
-            fig.add_trace(
-                go.Scatter(
-                    x=front_members[:, 0],
-                    y=front_members[:, 1],
-                    mode="markers",
-                    marker={"size": marker_sizes},
-                    name=f"Front {int(front)}",
-                    hovertemplate=(
-                        "Power: %{x:.2f} kW<br>"
-                        "Capacity: %{y:.2f} kWh<br>"
-                        "Mass: %{meta[0]:.2f} kg<br>"
-                        "Range: %{meta[1]:.2f} km<br>"
-                        "Time: %{meta[2]:.2f} s<br>"
-                    ),
-                    meta=front_members[:, 2:],
-                    showlegend=True,
-                )
-            )
+            add_scatter(fig, front_members, f"Front {int(front)}")
 
     return fig
 

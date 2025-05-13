@@ -186,3 +186,101 @@ def save_plotly_figure(fig: go.Figure, file_name: str) -> None:
         print(f"Figure saved successfully to {file_path}")
     except ValueError as e:
         print(f"Error saving figure: {e}")
+
+
+def create_ev_optimisation_animation(result, x_range=(0, 500), y_range=(0, 200)):
+    """
+    Create an animated plot for EV optimisation results.
+
+    Parameters
+    ----------
+    result : dict
+        A dictionary containing generation results.
+    x_range : tuple, optional
+        Range for the x-axis (Motor Power), by default (0, 500).
+    y_range : tuple, optional
+        Range for the y-axis (Battery Capacity), by default (0, 200).
+
+    Returns
+    -------
+    plotly.graph_objects.Figure
+        The animated figure.
+    """
+    max_fronts = max([np.unique(r.fronts).shape[0] for r in result.values()])
+
+    frames = []
+    for r in result.values():
+        pop_array = np.array(
+            [
+                (
+                    v.motor_power,
+                    v.battery_capacity,
+                    v.mass(),
+                    -r.objectives[i, 0],  # Range (km)
+                    r.objectives[i, 1],  # Time (s)
+                )
+                for i, v in enumerate(r.population)
+            ]
+        )
+
+        pop_array = np.column_stack((pop_array, r.fronts))
+
+        # Initialise an empty list to store traces for each front
+        traces = []
+        for front in range(1, max_fronts + 1):
+            # Find indices of individuals belonging to the current front
+            front_idxs = np.where(pop_array[:, -1] == front)
+            name = f"Front {int(front)}"
+
+            if front_idxs[0].size != 0:
+                # Extract individuals in the current front
+                front_members = pop_array[front_idxs]
+
+                # Create a scatter plot for the current front
+                trace = _create_scatter(front_members, name)
+            else:
+                # Add an empty trace if no individuals are in the current front
+                trace = go.Scatter(name=name, x=[], y=[])
+
+            # Append the trace to the list
+            traces.append(trace)
+
+        frames.append(
+            go.Frame(
+                data=traces,
+                layout=go.Layout(
+                    title_text=f"EV Optimisation - Generation: {r.generation}"
+                ),
+            )
+        )
+
+    fig = go.Figure(
+        data=frames[0].data,
+        layout=go.Layout(
+            xaxis={"range": x_range, "autorange": False, "title": "Motor Power (kW)"},
+            yaxis={
+                "range": y_range,
+                "autorange": False,
+                "title": "Battery Capacity (kWh)",
+            },
+            title={"text": "EV Optimisation - Generation 0"},
+            updatemenus=[
+                {
+                    "type": "buttons",
+                    "buttons": [
+                        {
+                            "label": "Play",
+                            "method": "animate",
+                            "args": [
+                                None,
+                                {"frame": {"duration": 500, "redraw": True}},
+                            ],
+                        },
+                    ],
+                }
+            ],
+        ),
+        frames=frames,
+    )
+
+    return fig

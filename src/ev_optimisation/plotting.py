@@ -74,7 +74,16 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
         )
 
     pop_array = np.array(
-        [(v.motor_power, v.battery_capacity, v.mass()) for v in result.population]
+        [
+            (
+                v.motor_power,
+                v.battery_capacity,
+                v.mass(),
+                -result.objectives[i, 0],  # Range (km)
+                result.objectives[i, 1],  # Time (s)
+            )
+            for i, v in enumerate(result.population)
+        ]
     )
 
     def calculate_marker_sizes(masses):
@@ -101,9 +110,7 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
         marker_sizes = calculate_marker_sizes(pop_array[:, 2])
         fig.add_trace(
             go.Scatter(
-                # power
                 x=pop_array[:, 0],
-                # capacity
                 y=pop_array[:, 1],
                 mode="markers",
                 marker={"size": marker_sizes},
@@ -111,9 +118,12 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
                 hovertemplate=(
                     "Power: %{x:.2f} kW<br>"
                     "Capacity: %{y:.2f} kWh<br>"
-                    "Mass: %{meta:.2f} kg<br>"
+                    "Mass: %{meta[0]:.2f} kg<br>"
+                    "Range: %{meta[1]:.2f} km<br>"
+                    "Time: %{meta[2]:.2f} s<br>"
                 ),
-                meta=pop_array[:, 2],
+                meta=pop_array[:, 2:],
+                showlegend=True,
             )
         )
     else:
@@ -127,9 +137,7 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
 
             fig.add_trace(
                 go.Scatter(
-                    # power
                     x=front_members[:, 0],
-                    # capacity
                     y=front_members[:, 1],
                     mode="markers",
                     marker={"size": marker_sizes},
@@ -137,9 +145,11 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
                     hovertemplate=(
                         "Power: %{x:.2f} kW<br>"
                         "Capacity: %{y:.2f} kWh<br>"
-                        "Mass: %{meta:.2f} kg<br>"
+                        "Mass: %{meta[0]:.2f} kg<br>"
+                        "Range: %{meta[1]:.2f} km<br>"
+                        "Time: %{meta[2]:.2f} s<br>"
                     ),
-                    meta=front_members[:, 2],
+                    meta=front_members[:, 2:],
                     showlegend=True,
                 )
             )

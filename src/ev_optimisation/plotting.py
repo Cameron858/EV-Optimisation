@@ -41,6 +41,69 @@ def plot_population(p: list[Vehicle], marker_scaler=75) -> tuple[plt.Figure, Any
     return fig, ax
 
 
+def _calculate_marker_sizes(masses):
+    """
+    Calculate marker sizes based on the given masses.
+
+    The marker sizes are scaled proportionally to the square of the normalized masses,
+    with a small offset added to ensure a minimum size.
+
+    Parameters
+    ----------
+    masses : numpy.ndarray
+        Array or series of masses.
+
+    Returns
+    -------
+    numpy.ndarray
+        Array of calculated marker sizes.
+    """
+    offset = 0.1
+    return 75 * ((masses / masses.max()) ** 2 + offset)
+
+
+def _add_scatter(fig: go.Figure, data: np.ndarray, trace_name: str):
+    """
+    Add a scatter plot to the given Plotly figure inplace.
+
+    Parameters
+    ----------
+    fig : go.Figure
+        The Plotly figure to which the scatter plot will be added.
+    data : np.ndarray
+        A 2D numpy array where:
+        - Column 0 represents the x-axis values (Power in kW).
+        - Column 1 represents the y-axis values (Capacity in kWh).
+        - Columns 2 and beyond represent metadata (Mass in kg, Range in km, Time in s).
+    trace_name : str
+        The name of the trace to be displayed in the legend.
+
+    Returns
+    -------
+    None
+        This function modifies the input `fig` in place by adding a scatter trace.
+    """
+    marker_sizes = _calculate_marker_sizes(data[:, 2])
+    fig.add_trace(
+        go.Scatter(
+            x=data[:, 0],
+            y=data[:, 1],
+            mode="markers",
+            marker={"size": marker_sizes},
+            name=trace_name,
+            hovertemplate=(
+                "Power: %{x:.2f} kW<br>"
+                "Capacity: %{y:.2f} kWh<br>"
+                "Mass: %{meta[0]:.2f} kg<br>"
+                "Range: %{meta[1]:.2f} km<br>"
+                "Time: %{meta[2]:.2f} s<br>"
+            ),
+            meta=data[:, 2:],
+            showlegend=True,
+        )
+    )
+
+
 def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
     """
     Plot the result of a generation.
@@ -72,6 +135,7 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
             yaxis_title="Battery Capacity [kWh]",
         )
 
+    # Convert the population and objectives into a structured numpy array for plotting.
     pop_array = np.array(
         [
             (
@@ -85,69 +149,8 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
         ]
     )
 
-    def calculate_marker_sizes(masses):
-        """
-        Calculate marker sizes based on the given masses.
-
-        The marker sizes are scaled proportionally to the square of the normalized masses,
-        with a small offset added to ensure a minimum size.
-
-        Parameters
-        ----------
-        masses : numpy.ndarray
-            Array or series of masses.
-
-        Returns
-        -------
-        numpy.ndarray
-            Array of calculated marker sizes.
-        """
-        offset = 0.1
-        return 75 * ((masses / masses.max()) ** 2 + offset)
-
-    def add_scatter(fig: go.Figure, data: np.ndarray, trace_name: str):
-        """
-        Add a scatter plot to the given Plotly figure inplace.
-
-        Parameters
-        ----------
-        fig : go.Figure
-            The Plotly figure to which the scatter plot will be added.
-        data : np.ndarray
-            A 2D numpy array where:
-            - Column 0 represents the x-axis values (Power in kW).
-            - Column 1 represents the y-axis values (Capacity in kWh).
-            - Columns 2 and beyond represent metadata (Mass in kg, Range in km, Time in s).
-        trace_name : str
-            The name of the trace to be displayed in the legend.
-
-        Returns
-        -------
-        None
-            This function modifies the input `fig` in place by adding a scatter trace.
-        """
-        marker_sizes = calculate_marker_sizes(data[:, 2])
-        fig.add_trace(
-            go.Scatter(
-                x=data[:, 0],
-                y=data[:, 1],
-                mode="markers",
-                marker={"size": marker_sizes},
-                name=trace_name,
-                hovertemplate=(
-                    "Power: %{x:.2f} kW<br>"
-                    "Capacity: %{y:.2f} kWh<br>"
-                    "Mass: %{meta[0]:.2f} kg<br>"
-                    "Range: %{meta[1]:.2f} km<br>"
-                    "Time: %{meta[2]:.2f} s<br>"
-                ),
-                meta=data[:, 2:],
-                showlegend=True,
-            )
-        )
-
     if not fronts:
-        add_scatter(fig, pop_array, "")
+        _add_scatter(fig, pop_array, "")
     else:
         pop_array = np.column_stack((pop_array, result.fronts))
 
@@ -155,7 +158,7 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
             front_idxs = np.where(pop_array[:, -1] == front)
             front_members = pop_array[front_idxs]
 
-            add_scatter(fig, front_members, f"Front {int(front)}")
+            _add_scatter(fig, front_members, f"Front {int(front)}")
 
     return fig
 

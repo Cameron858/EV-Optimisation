@@ -206,6 +206,9 @@ def create_ev_optimisation_animation(result, x_range=(0, 500), y_range=(0, 200))
     plotly.graph_objects.Figure
         The animated figure.
     """
+    # Determine the maximum number of Pareto fronts across all generations.
+    # This is needed to ensure consistent handling of fronts across generations,
+    # even if some generations have fewer (or no) fronts than others.
     max_fronts = max([np.unique(r.fronts).shape[0] for r in result.values()])
 
     frames = []

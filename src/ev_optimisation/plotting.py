@@ -188,13 +188,15 @@ def save_plotly_figure(fig: go.Figure, file_name: str) -> None:
         print(f"Error saving figure: {e}")
 
 
-def create_ev_optimisation_animation(result, x_range=(0, 500), y_range=(0, 200)):
+def create_ev_optimisation_animation(
+    result: dict[int, GenerationResult], x_range=(0, 500), y_range=(0, 200)
+):
     """
     Create an animated plot for EV optimisation results.
 
     Parameters
     ----------
-    result : dict
+    result : dict[int, GenerationResult]
         A dictionary containing generation results.
     x_range : tuple, optional
         Range for the x-axis (Motor Power), by default (0, 500).

@@ -1,0 +1,11 @@
+.btn-lightseagreen {
+    background-color: lightseagreen !important;
+    border-color: lightseagreen !important;
+    color: white !important;
+}
+
+/* Shrink button while pressed */
+.btn-lightseagreen:active {
+  transform: scale(0.95);
+  transition: transform 0.15s ease;
+}

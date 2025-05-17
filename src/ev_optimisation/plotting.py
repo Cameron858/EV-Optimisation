@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Literal
 import matplotlib.pyplot as plt
 import numpy as np
 from ev_optimisation.vehicle import GenerationResult, Vehicle
@@ -62,7 +62,9 @@ def _calculate_marker_sizes(masses):
     return 75 * ((masses / masses.max()) ** 2 + offset)
 
 
-def _create_scatter(data: np.ndarray, trace_name: str) -> go.Scatter:
+def _create_scatter(
+    data: np.ndarray, trace_name: str, mode: Literal["real", "objective"] = "real"
+) -> go.Scatter:
     """
     Create a scatter plot trace for Plotly.
 
@@ -70,11 +72,15 @@ def _create_scatter(data: np.ndarray, trace_name: str) -> go.Scatter:
     ----------
     data : np.ndarray
         A 2D numpy array where:
-        - Column 0 represents the x-axis values (Power in kW).
-        - Column 1 represents the y-axis values (Capacity in kWh).
-        - Columns 2 and beyond represent metadata (Mass in kg, Range in km, Time in s).
+        - Column 0: Power in kW
+        - Column 1: Capacity in kWh
+        - Column 2: Mass in kg
+        - Column 3: Range in km (negative for minimization)
+        - Column 4: Time in s
     trace_name : str
         The name of the trace to be displayed in the legend.
+    mode : Literal["real", "objective"], optional
+        If "real", plot Capacity vs Power. If "objective", plot Time vs Range.
 
     Returns
     -------
@@ -82,20 +88,38 @@ def _create_scatter(data: np.ndarray, trace_name: str) -> go.Scatter:
         A Plotly Scatter trace object.
     """
     marker_sizes = _calculate_marker_sizes(data[:, 2])
-    return go.Scatter(
-        x=data[:, 0],
-        y=data[:, 1],
-        mode="markers",
-        marker={"size": marker_sizes},
-        name=trace_name,
-        hovertemplate=(
+    if mode == "real":
+        x = data[:, 0]
+        y = data[:, 1]
+        hovertemplate = (
             "Power: %{x:.2f} kW<br>"
             "Capacity: %{y:.2f} kWh<br>"
             "Mass: %{meta[0]:.2f} kg<br>"
             "Range: %{meta[1]:.2f} km<br>"
             "Time: %{meta[2]:.2f} s<br>"
-        ),
-        meta=data[:, 2:],
+        )
+        meta = data[:, 2:5]
+    # mode == "objective"
+    else:
+        x = data[:, 3]
+        y = data[:, 4]
+        hovertemplate = (
+            "Range: %{x:.2f} km<br>"
+            "Time: %{y:.2f} s<br>"
+            "Power: %{meta[0]:.2f} kW<br>"
+            "Capacity: %{meta[1]:.2f} kWh<br>"
+            "Mass: %{meta[2]:.2f} kg<br>"
+        )
+        meta = data[:, [0, 1, 2]]
+
+    return go.Scatter(
+        x=x,
+        y=y,
+        mode="markers",
+        marker={"size": marker_sizes},
+        name=trace_name,
+        hovertemplate=hovertemplate,
+        meta=meta,
         showlegend=True,
     )
 

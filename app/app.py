@@ -39,6 +39,7 @@ app.layout = html.Div(
                                                     value=10,
                                                     min=2,
                                                     max=50,
+                                                    step=2,
                                                 ),
                                             ],
                                             class_name="input-group",

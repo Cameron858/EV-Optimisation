@@ -9,3 +9,7 @@
   transform: scale(0.95);
   transition: transform 0.15s ease;
 }
+
+.input-group {
+  padding: 0.5rem 0;
+}

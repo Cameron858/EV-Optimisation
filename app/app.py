@@ -40,7 +40,8 @@ app.layout = html.Div(
                                                     min=2,
                                                     max=50,
                                                 ),
-                                            ]
+                                            ],
+                                            class_name="input-group",
                                         ),
                                         dbc.Row(
                                             [
@@ -56,7 +57,8 @@ app.layout = html.Div(
                                                     min=1,
                                                     max=50,
                                                 ),
-                                            ]
+                                            ],
+                                            class_name="input-group",
                                         ),
                                         dbc.Row(
                                             [
@@ -77,7 +79,8 @@ app.layout = html.Div(
                                                     id="mode-select",
                                                     value="real",
                                                 ),
-                                            ]
+                                            ],
+                                            class_name="input-group",
                                         ),
                                     ]
                                 )

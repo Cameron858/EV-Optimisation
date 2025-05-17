@@ -227,7 +227,10 @@ def save_plotly_figure(fig: go.Figure, file_name: str) -> None:
         print(f"Error saving figure: {e}")
 
 
-def create_ev_optimisation_animation(result: dict[int, GenerationResult]):
+def create_ev_optimisation_animation(
+    result: dict[int, GenerationResult],
+    mode: Literal["real", "objective"] = "real",
+):
     """
     Create an animated plot for EV optimisation results.
 
@@ -235,10 +238,8 @@ def create_ev_optimisation_animation(result: dict[int, GenerationResult]):
     ----------
     result : dict[int, GenerationResult]
         A dictionary containing generation results.
-    x_range : tuple, optional
-        Range for the x-axis (Motor Power), by default (0, 500).
-    y_range : tuple, optional
-        Range for the y-axis (Battery Capacity), by default (0, 200).
+    mode : Literal["real", "objective"], optional
+        If "real", plot Capacity vs Power. If "objective", plot Time vs Range.
 
     Returns
     -------
@@ -279,7 +280,7 @@ def create_ev_optimisation_animation(result: dict[int, GenerationResult]):
                 front_members = pop_array[front_idxs]
 
                 # Create a scatter plot for the current front
-                trace = _create_scatter(front_members, name)
+                trace = _create_scatter(front_members, name, mode=mode)
             else:
                 # Add an empty trace if no individuals are in the current front
                 trace = go.Scatter(name=name, x=[], y=[])

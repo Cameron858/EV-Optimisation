@@ -30,11 +30,11 @@ app.layout = html.Div(
                                             [
                                                 dbc.Label(
                                                     "Population size",
-                                                    html_for="pop-size-input",
+                                                    html_for="n-pop-input",
                                                 ),
                                                 dbc.Input(
                                                     type="number",
-                                                    id="pop-size-input",
+                                                    id="n-pop-input",
                                                     placeholder="Population size",
                                                     value=10,
                                                     min=2,

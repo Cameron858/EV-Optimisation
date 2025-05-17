@@ -40,6 +40,7 @@ app.layout = html.Div(
                                                     min=2,
                                                     max=50,
                                                     step=2,
+                                                    class_name="validate-input",
                                                 ),
                                             ],
                                             class_name="input-group",
@@ -57,6 +58,7 @@ app.layout = html.Div(
                                                     value=10,
                                                     min=1,
                                                     max=50,
+                                                    class_name="validate-input",
                                                 ),
                                             ],
                                             class_name="input-group",
@@ -86,7 +88,7 @@ app.layout = html.Div(
                                     ]
                                 )
                             ],
-                            class_name="m-1",
+                            class_name="m-3",
                         ),
                         dbc.Button(
                             "Run Optimiser",

@@ -33,13 +33,13 @@ def register_callbacks(app: Dash) -> Dash:
         Input("run-btn", "n_clicks"),
         State("n-pop-input", "value"),
         State("n-gens-input", "value"),
+        State("mode-select", "value"),
         prevent_initial_call=True,
     )
-    def run_algorithm(n_clicks, n_pop, n_gens) -> go.Figure:
-        print(n_gens, n_pop)
+    def run_algorithm(n_clicks, n_pop, n_gens, mode) -> go.Figure:
         config = VehicleConfig()
         result = optimise_ev_population(config, n_gens, n_pop)
-        fig = create_ev_optimisation_animation(result, mode="real")
+        fig = create_ev_optimisation_animation(result, mode)
         return fig
 
     return app

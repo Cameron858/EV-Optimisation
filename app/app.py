@@ -1,6 +1,8 @@
 from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
 
+from app.callbacks import register_callbacks
+
 app = Dash(
     __name__,
     title="EV Optimiser",
@@ -76,3 +78,6 @@ app.layout = html.Div(
         ),
     ]
 )
+
+
+app = register_callbacks(app)

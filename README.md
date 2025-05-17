@@ -46,9 +46,18 @@ This project is an implementation of `NSGA-II` [1].
     poetry install
     ```
 
-5. Activate the virtual environment created by Poetry:
+5. (Optional) Activate the virtual environment created by Poetry:
     ```bash
     poetry shell
+    ```
+
+### Running the UI
+
+The UI has been built using [Dash](https://dash.plotly.com/) and [Dash Bootstrap](https://dash-bootstrap-components.opensource.faculty.ai/)
+
+1. Run the UI locally (recommended for development):
+    ```bash
+    poetry run python ./main.py
     ```
 
 ### References

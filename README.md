@@ -4,6 +4,7 @@ This is a cool (imo) side project that I've been working on. I've always been in
 
 Key Learnings:
 - Understanding the fundamentals of multi-objective optimisation, Pareto fronts and the NSGA-II algorithm.
+- Implementing algorithms using a scientific paper as a primary guiding resource
 - Gaining experience in implementing genetic algorithms in Python.
 - Learning how to visualise trade-offs between conflicting objectives.
 - Exploring the dynamics of EV performance metrics like range and acceleration.

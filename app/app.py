@@ -58,6 +58,27 @@ app.layout = html.Div(
                                                 ),
                                             ]
                                         ),
+                                        dbc.Row(
+                                            [
+                                                dbc.Label(
+                                                    "Plot mode", html_for="mode-select"
+                                                ),
+                                                dbc.Select(
+                                                    options=[
+                                                        {
+                                                            "label": "Real",
+                                                            "value": "real",
+                                                        },
+                                                        {
+                                                            "label": "Objectives",
+                                                            "value": "objective",
+                                                        },
+                                                    ],
+                                                    id="mode-select",
+                                                    value="real",
+                                                ),
+                                            ]
+                                        ),
                                     ]
                                 )
                             ],

@@ -124,7 +124,12 @@ def _create_scatter(
     )
 
 
-def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
+def plot_result(
+    result: GenerationResult,
+    fronts=False,
+    fig=None,
+    mode: Literal["real", "objective"] = "real",
+) -> go.Figure:
     """
     Plot the result of a generation.
 
@@ -136,6 +141,8 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
         Add fronts to the plot. Defaults to False
     fig : plotly.graph_objects.Figure, optional
         An existing figure to which the population will be added. If None, a new figure is created.
+    mode : Literal["real", "objective"], optional
+        If "real", plot Capacity vs Power. If "objective", plot Time vs Range.
 
     Returns
     -------
@@ -149,10 +156,16 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
     if fig is None:
         title_suffix = " with Pareto Fronts" if fronts else ""
         fig = go.Figure()
+        if mode == "real":
+            xaxis_title = "Motor Power [kW]"
+            yaxis_title = "Battery Capacity [kWh]"
+        else:
+            xaxis_title = "Range [km]"
+            yaxis_title = "Time [s]"
         fig.update_layout(
             title=f"Population {result.generation}{title_suffix}",
-            xaxis_title="Motor Power [kW]",
-            yaxis_title="Battery Capacity [kWh]",
+            xaxis_title=xaxis_title,
+            yaxis_title=yaxis_title,
         )
 
     # Convert the population and objectives into a structured numpy array for plotting.
@@ -170,7 +183,7 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
     )
 
     if not fronts:
-        fig.add_trace(_create_scatter(pop_array, ""))
+        fig.add_trace(_create_scatter(pop_array, "", mode=mode))
     else:
         pop_array = np.column_stack((pop_array, result.fronts))
 
@@ -178,7 +191,9 @@ def plot_result(result: GenerationResult, fronts=False, fig=None) -> go.Figure:
             front_idxs = np.where(pop_array[:, -1] == front)
             front_members = pop_array[front_idxs]
 
-            fig.add_trace(_create_scatter(front_members, f"Front {int(front)}"))
+            fig.add_trace(
+                _create_scatter(front_members, f"Front {int(front)}", mode=mode)
+            )
 
     return fig
 

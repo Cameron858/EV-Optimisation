@@ -1,5 +1,8 @@
 from dash import Dash, callback, Input, Output, State
-from dash import Dash, Input, Output, State
+from ev_optimisation.algorithm import optimise_ev_population
+from ev_optimisation.plotting import create_ev_optimisation_animation
+from ev_optimisation.vehicle import VehicleConfig
+import plotly.graph_objects as go
 
 
 def register_callbacks(app: Dash) -> Dash:
@@ -24,5 +27,19 @@ def register_callbacks(app: Dash) -> Dash:
             return True
 
         return False  # Enable button if all validations pass
+
+    @callback(
+        Output("main-output-graph", "figure"),
+        Input("run-btn", "n_clicks"),
+        State("n-pop-input", "value"),
+        State("n-gens-input", "value"),
+        prevent_initial_call=True,
+    )
+    def run_algorithm(n_clicks, n_pop, n_gens) -> go.Figure:
+        print(n_gens, n_pop)
+        config = VehicleConfig()
+        result = optimise_ev_population(config, n_gens, n_pop)
+        fig = create_ev_optimisation_animation(result, mode="real")
+        return fig
 
     return app

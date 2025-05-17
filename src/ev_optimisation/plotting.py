@@ -188,9 +188,7 @@ def save_plotly_figure(fig: go.Figure, file_name: str) -> None:
         print(f"Error saving figure: {e}")
 
 
-def create_ev_optimisation_animation(
-    result: dict[int, GenerationResult], x_range=(0, 500), y_range=(0, 200)
-):
+def create_ev_optimisation_animation(result: dict[int, GenerationResult]):
     """
     Create an animated plot for EV optimisation results.
 
@@ -262,12 +260,8 @@ def create_ev_optimisation_animation(
     fig = go.Figure(
         data=frames[0].data,
         layout=go.Layout(
-            xaxis={"range": x_range, "autorange": False, "title": "Motor Power (kW)"},
-            yaxis={
-                "range": y_range,
-                "autorange": False,
-                "title": "Battery Capacity (kWh)",
-            },
+            xaxis={"autorange": True, "title": "Motor Power (kW)"},
+            yaxis={"autorange": True, "title": "Battery Capacity (kWh)"},
             title={"text": "EV Optimisation - Generation 0"},
             updatemenus=[
                 {

@@ -329,6 +329,31 @@ def create_ev_optimisation_animation(
     result: dict[int, GenerationResult] | pd.DataFrame,
     mode: Literal["real", "objective"] = "real",
 ):
+    """
+    Create an animated scatter plot for EV optimisation results across generations.
+
+    This function visualises the algorithm over generations, using either raw
+    `GenerationResult` objects or a pd.DataFrame reconstructed from stored JSON.
+    Each generation's population is plotted with Pareto fronts highlighted.
+
+    Parameters
+    ----------
+    result : dict[int, GenerationResult] or pd.DataFrame
+        The optimisation results. Can be either:
+        - A dictionary mapping generation number to GenerationResult objects.
+        - A pandas DataFrame containing columns:
+          ['Motor Power (kW)', 'Battery Capacity (kWh)', 'Mass (kg)', 'Front', 'Range', 'Time'].
+
+    mode : Literal["real", "objective"], default="real"
+        Defines the axis labels and plot dimensions:
+        - "real": plots Battery Capacity (kWh) vs Motor Power (kW)
+        - "objective": plots Time (s) vs Range (km)
+
+    Returns
+    -------
+    go.Figure
+        A Plotly Figure object containing the animated plot, with one frame per generation.
+    """
     generations_data = extract_generation_populations(result)
     max_fronts = max(int(np.max(pop_array[:, -1])) for _, pop_array in generations_data)
 

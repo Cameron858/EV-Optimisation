@@ -249,6 +249,8 @@ def _from_generation_result(r: GenerationResult) -> np.ndarray:
         ]
     )
     return pop_array
+
+
 def _from_dataframe_group(df_gen: pd.DataFrame) -> np.ndarray:
     """
     Create a pop_array from a DataFrame group corresponding to one generation.
@@ -322,8 +324,22 @@ def _create_frame(pop_array, generation, max_fronts, mode):
         layout=go.Layout(title_text=f"EV Optimisation - Generation: {generation}"),
     )
 
+
+def create_ev_optimisation_animation(
+    result: dict[int, GenerationResult] | pd.DataFrame,
+    mode: Literal["real", "objective"] = "real",
+):
+    generations_data = extract_generation_populations(result)
+    max_fronts = max(int(np.max(pop_array[:, -1])) for _, pop_array in generations_data)
+
+    frames = []
+    for generation, pop_array in generations_data:
+        frame = _create_frame(pop_array, generation, max_fronts, mode)
+        frames.append(frame)
+
     fig = go.Figure(
         data=frames[0].data,
+        frames=frames,
         layout=go.Layout(
             xaxis={"autorange": True, "title": "Motor Power (kW)"},
             yaxis={"autorange": True, "title": "Battery Capacity (kWh)"},
@@ -332,19 +348,22 @@ def _create_frame(pop_array, generation, max_fronts, mode):
                 {
                     "type": "buttons",
                     "buttons": [
+                        {"label": "Play", "method": "animate", "args": [None]},
                         {
-                            "label": "Play",
+                            "label": "Pause",
                             "method": "animate",
                             "args": [
-                                None,
-                                {"frame": {"duration": 500, "redraw": True}},
+                                [None],
+                                {
+                                    "mode": "immediate",
+                                    "frame": {"duration": 0},
+                                    "transition": {"duration": 0},
+                                },
                             ],
                         },
                     ],
                 }
             ],
         ),
-        frames=frames,
     )
-
     return fig

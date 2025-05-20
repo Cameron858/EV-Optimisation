@@ -64,28 +64,6 @@ app.layout = html.Div(
                                             ],
                                             class_name="input-group",
                                         ),
-                                        dbc.Row(
-                                            [
-                                                dbc.Label(
-                                                    "Plot mode", html_for="mode-select"
-                                                ),
-                                                dbc.Select(
-                                                    options=[
-                                                        {
-                                                            "label": "Real",
-                                                            "value": "real",
-                                                        },
-                                                        {
-                                                            "label": "Objectives",
-                                                            "value": "objective",
-                                                        },
-                                                    ],
-                                                    id="mode-select",
-                                                    value="real",
-                                                ),
-                                            ],
-                                            class_name="input-group",
-                                        ),
                                     ]
                                 )
                             ],

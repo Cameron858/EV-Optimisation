@@ -268,6 +268,40 @@ def _from_dataframe_group(df_gen: pd.DataFrame) -> np.ndarray:
         ]
     ].to_numpy()
 
+
+def extract_generation_populations(
+    result: dict[int, GenerationResult] | pd.DataFrame,
+) -> list[tuple[int, np.ndarray]]:
+    """
+    Extract generation-wise population arrays from input data.
+
+    Parameters
+    ----------
+    result : dict[int, GenerationResult] | pd.DataFrame
+
+    Returns
+    -------
+    List of (generation, pop_array) tuples, where pop_array includes:
+    [motor_power, battery_capacity, mass, range, time, front]
+    """
+    generations_data = []
+
+    if isinstance(result, dict):
+        for gen, r in result.items():
+            pop_array = _from_generation_result(r)
+            generations_data.append((gen, pop_array))
+
+    elif isinstance(result, pd.DataFrame):
+        grouped = result.groupby("Generation")
+        for gen, df_gen in grouped:
+            pop_array = _from_dataframe_group(df_gen)
+            generations_data.append((gen, pop_array))
+
+    else:
+        raise TypeError("Input must be a dict[int, GenerationResult] or a pd.DataFrame")
+
+    return generations_data
+
             if front_idxs[0].size != 0:
                 # Extract individuals in the current front
                 front_members = pop_array[front_idxs]

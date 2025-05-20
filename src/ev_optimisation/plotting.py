@@ -302,27 +302,25 @@ def extract_generation_populations(
 
     return generations_data
 
-            if front_idxs[0].size != 0:
-                # Extract individuals in the current front
-                front_members = pop_array[front_idxs]
 
-                # Create a scatter plot for the current front
-                trace = _create_scatter(front_members, name, mode=mode)
-            else:
-                # Add an empty trace if no individuals are in the current front
-                trace = go.Scatter(name=name, x=[], y=[])
+def _create_frame(pop_array, generation, max_fronts, mode):
+    traces = []
+    for front in range(1, max_fronts + 1):
+        front_idxs = np.where(pop_array[:, -1] == front)
+        name = f"Front {int(front)}"
 
-            # Append the trace to the list
-            traces.append(trace)
+        if front_idxs[0].size != 0:
+            front_members = pop_array[front_idxs]
+            trace = _create_scatter(front_members, name, mode=mode)
+        else:
+            trace = go.Scatter(name=name, x=[], y=[])
 
-        frames.append(
-            go.Frame(
-                data=traces,
-                layout=go.Layout(
-                    title_text=f"EV Optimisation - Generation: {r.generation}"
-                ),
-            )
-        )
+        traces.append(trace)
+
+    return go.Frame(
+        data=traces,
+        layout=go.Layout(title_text=f"EV Optimisation - Generation: {generation}"),
+    )
 
     fig = go.Figure(
         data=frames[0].data,

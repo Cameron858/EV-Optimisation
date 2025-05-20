@@ -227,53 +227,27 @@ def save_plotly_figure(fig: go.Figure, file_name: str) -> None:
         print(f"Error saving figure: {e}")
 
 
-def create_ev_optimisation_animation(
-    result: dict[int, GenerationResult],
-    mode: Literal["real", "objective"] = "real",
-):
+def _from_generation_result(r: GenerationResult) -> np.ndarray:
     """
-    Create an animated plot for EV optimisation results.
+    Create a pop_array from a GenerationResult.
 
-    Parameters
-    ----------
-    result : dict[int, GenerationResult]
-        A dictionary containing generation results.
-    mode : Literal["real", "objective"], optional
-        If "real", plot Capacity vs Power. If "objective", plot Time vs Range.
-
-    Returns
-    -------
-    plotly.graph_objects.Figure
-        The animated figure.
+    Returns a numpy array of shape (n_individuals, 6):
+    [motor_power, battery_capacity, mass, range, time, front]
     """
-    # Determine the maximum number of Pareto fronts across all generations.
-    # This is needed to ensure consistent handling of fronts across generations,
-    # even if some generations have fewer (or no) fronts than others.
-    max_fronts = max([np.unique(r.fronts).shape[0] for r in result.values()])
-
-    frames = []
-    for r in result.values():
-        pop_array = np.array(
-            [
-                (
-                    v.motor_power,
-                    v.battery_capacity,
-                    v.mass(),
-                    -r.objectives[i, 0],  # Range (km)
-                    r.objectives[i, 1],  # Time (s)
-                )
-                for i, v in enumerate(r.population)
-            ]
-        )
-
-        pop_array = np.column_stack((pop_array, r.fronts))
-
-        # Initialise an empty list to store traces for each front
-        traces = []
-        for front in range(1, max_fronts + 1):
-            # Find indices of individuals belonging to the current front
-            front_idxs = np.where(pop_array[:, -1] == front)
-            name = f"Front {int(front)}"
+    pop_array = np.array(
+        [
+            (
+                v.motor_power,
+                v.battery_capacity,
+                v.mass(),
+                -r.objectives[i, 0],  # Range (negated)
+                r.objectives[i, 1],  # Time
+                r.fronts[i],  # Front
+            )
+            for i, v in enumerate(r.population)
+        ]
+    )
+    return pop_array
 
             if front_idxs[0].size != 0:
                 # Extract individuals in the current front

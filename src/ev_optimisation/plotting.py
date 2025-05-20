@@ -248,6 +248,24 @@ def _from_generation_result(r: GenerationResult) -> np.ndarray:
         ]
     )
     return pop_array
+def _from_dataframe_group(df_gen: pd.DataFrame) -> np.ndarray:
+    """
+    Create a pop_array from a DataFrame group corresponding to one generation.
+
+    Expects columns: 'Motor Power (kW)', 'Battery Capacity (kWh)', 'Mass (kg)', 'Front', 'Range', 'Time'
+    """
+    df_gen = df_gen.copy()
+    df_gen["Range"] = -df_gen["Range"]
+    return df_gen[
+        [
+            "Motor Power (kW)",
+            "Battery Capacity (kWh)",
+            "Mass (kg)",
+            "Range",
+            "Time",
+            "Front",
+        ]
+    ].to_numpy()
 
             if front_idxs[0].size != 0:
                 # Extract individuals in the current front

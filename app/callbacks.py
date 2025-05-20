@@ -1,4 +1,5 @@
 from dash import Dash, callback, Input, Output, State
+from ev_optimisation.adapters import result_to_json
 from ev_optimisation.algorithm import optimise_ev_population
 from ev_optimisation.plotting import create_ev_optimisation_animation
 from ev_optimisation.vehicle import VehicleConfig
@@ -29,17 +30,17 @@ def register_callbacks(app: Dash) -> Dash:
         return False  # Enable button if all validations pass
 
     @callback(
-        Output("main-output-graph", "figure"),
+        Output("result-store", "data"),
         Input("run-btn", "n_clicks"),
         State("n-pop-input", "value"),
         State("n-gens-input", "value"),
         State("mode-select", "value"),
         prevent_initial_call=True,
     )
-    def run_algorithm(n_clicks, n_pop, n_gens, mode) -> go.Figure:
+    def run_algorithm(n_clicks, n_pop, n_gens, mode) -> dict:
         config = VehicleConfig()
         result = optimise_ev_population(config, n_gens, n_pop)
-        fig = create_ev_optimisation_animation(result, mode)
-        return fig
+        json_result = result_to_json(result)
+        return json_result
 
     return app

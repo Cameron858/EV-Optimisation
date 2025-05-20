@@ -12,6 +12,7 @@ app = Dash(
 
 app.layout = html.Div(
     [
+        dcc.Store(id="result-store"),
         dbc.NavbarSimple(brand="EV Optimiser", color="lightseagreen"),
         dbc.Row(
             [

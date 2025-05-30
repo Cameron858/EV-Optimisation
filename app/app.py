@@ -226,6 +226,7 @@ app.layout = html.Div(
                 ),
                 # right - outputs
                 dbc.Col([dcc.Graph(id="main-output-graph")], width=8),
+                dcc.Slider(id="gen-slider-input", min=0, step=1),
             ]
         ),
     ]

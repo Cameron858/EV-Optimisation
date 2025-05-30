@@ -43,7 +43,11 @@ def register_callbacks(app: Dash) -> Dash:
     def run_algorithm(n_clicks, n_pop, n_gens, mutation_rate, crossover_rate) -> dict:
         config = VehicleConfig()
         result = optimise_ev_population(
-            config, n_gens, n_pop, mutation_rate, crossover_rate
+            config,
+            n_gens,
+            n_pop,
+            crossover_rate=crossover_rate,
+            mutate_rate=mutation_rate,
         )
         json_result = result_to_json(result)
         return json_result

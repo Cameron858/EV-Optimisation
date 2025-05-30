@@ -392,3 +392,43 @@ def create_ev_optimisation_animation(
         ),
     )
     return fig
+
+
+def create_ev_optimisation_static_frame(
+    data: pd.DataFrame,
+    generation: int,
+    mode: Literal["real", "objective"] = "objective",
+) -> go.Figure:
+    pop_array = _from_dataframe_group(data)
+    max_fronts = data["Front"].unique().shape[0]
+
+    traces = []
+    for front in range(1, max_fronts + 1):
+        front_idxs = np.where(pop_array[:, -1] == front)
+        name = f"Front {int(front)}"
+
+        if front_idxs[0].size != 0:
+            front_members = pop_array[front_idxs]
+            trace = _create_scatter(front_members, name, mode=mode)
+        else:
+            trace = go.Scatter(name=name, x=[], y=[])
+
+        traces.append(trace)
+
+    xaxis_title = {
+        "real": "Motor Power (kW)",
+        "objective": "Range (km)",
+    }[mode]
+    yaxis_title = {
+        "real": "Battery Capacity (kWh)",
+        "objective": "Time (s)",
+    }[mode]
+
+    return go.Figure(
+        data=traces,
+        layout=go.Layout(
+            xaxis={"autorange": True, "title": xaxis_title},
+            yaxis={"autorange": True, "title": yaxis_title},
+            title={"text": f"EV Optimisation - Generation {generation}"},
+        ),
+    )

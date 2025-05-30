@@ -27,98 +27,107 @@ app.layout = html.Div(
                                             "Parameters",
                                             className="card-title",
                                         ),
-                                        dbc.Row(
+                                        dbc.Accordion(
                                             [
-                                                dbc.Label(
-                                                    "Population size",
-                                                    html_for="n-pop-input",
-                                                ),
-                                                dbc.Input(
-                                                    type="number",
-                                                    id="n-pop-input",
-                                                    placeholder="Population size",
-                                                    value=10,
-                                                    min=2,
-                                                    max=50,
-                                                    step=2,
-                                                    class_name="validate-input",
-                                                ),
-                                            ],
-                                            class_name="input-group",
-                                        ),
-                                        dbc.Row(
-                                            [
-                                                dbc.Label(
-                                                    "Generations",
-                                                    html_for="n-gens-input",
-                                                ),
-                                                dbc.Input(
-                                                    type="number",
-                                                    id="n-gens-input",
-                                                    placeholder="Number of generations",
-                                                    value=10,
-                                                    min=1,
-                                                    max=50,
-                                                    class_name="validate-input",
-                                                ),
-                                            ],
-                                            class_name="input-group",
-                                        ),
-                                        dbc.Row(
-                                            [
-                                                dbc.Label(
-                                                    "Mutation rate",
-                                                    html_for="mutation-input",
-                                                ),
-                                                dbc.Input(
-                                                    type="number",
-                                                    id="mutation-input",
-                                                    placeholder="Mutation rate",
-                                                    value=0.05,
-                                                    min=0,
-                                                    max=1,
-                                                    step=0.01,
-                                                    class_name="validate-input",
-                                                ),
-                                            ],
-                                            class_name="input-group",
-                                        ),
-                                        dbc.Row(
-                                            [
-                                                dbc.Label(
-                                                    "Crossover rate",
-                                                    html_for="crossover-input",
-                                                ),
-                                                dbc.Input(
-                                                    type="number",
-                                                    id="crossover-input",
-                                                    placeholder="Crossover rate",
-                                                    value=0.8,
-                                                    min=0,
-                                                    max=1,
-                                                    step=0.01,
-                                                    class_name="validate-input",
-                                                ),
-                                            ],
-                                            class_name="input-group",
-                                        ),
-                                        dbc.Row(
-                                            [
-                                                dbc.Label(
-                                                    "Random seed",
-                                                    html_for="seed-input",
-                                                ),
-                                                dbc.Input(
-                                                    type="number",
-                                                    id="seed-input",
-                                                    placeholder="Random seed",
-                                                    value=42,
-                                                    min=0,
-                                                    step=1,
-                                                    class_name="validate-input",
-                                                ),
-                                            ],
-                                            class_name="input-group",
+                                                dbc.AccordionItem(
+                                                    [
+                                                        dbc.Row(
+                                                            [
+                                                                dbc.Label(
+                                                                    "Population size",
+                                                                    html_for="n-pop-input",
+                                                                ),
+                                                                dbc.Input(
+                                                                    type="number",
+                                                                    id="n-pop-input",
+                                                                    placeholder="Population size",
+                                                                    value=10,
+                                                                    min=2,
+                                                                    max=50,
+                                                                    step=2,
+                                                                    class_name="validate-input",
+                                                                ),
+                                                            ],
+                                                            class_name="input-group",
+                                                        ),
+                                                        dbc.Row(
+                                                            [
+                                                                dbc.Label(
+                                                                    "Generations",
+                                                                    html_for="n-gens-input",
+                                                                ),
+                                                                dbc.Input(
+                                                                    type="number",
+                                                                    id="n-gens-input",
+                                                                    placeholder="Number of generations",
+                                                                    value=10,
+                                                                    min=1,
+                                                                    max=50,
+                                                                    class_name="validate-input",
+                                                                ),
+                                                            ],
+                                                            class_name="input-group",
+                                                        ),
+                                                        dbc.Row(
+                                                            [
+                                                                dbc.Label(
+                                                                    "Mutation rate",
+                                                                    html_for="mutation-input",
+                                                                ),
+                                                                dbc.Input(
+                                                                    type="number",
+                                                                    id="mutation-input",
+                                                                    placeholder="Mutation rate",
+                                                                    value=0.05,
+                                                                    min=0,
+                                                                    max=1,
+                                                                    step=0.01,
+                                                                    class_name="validate-input",
+                                                                ),
+                                                            ],
+                                                            class_name="input-group",
+                                                        ),
+                                                        dbc.Row(
+                                                            [
+                                                                dbc.Label(
+                                                                    "Crossover rate",
+                                                                    html_for="crossover-input",
+                                                                ),
+                                                                dbc.Input(
+                                                                    type="number",
+                                                                    id="crossover-input",
+                                                                    placeholder="Crossover rate",
+                                                                    value=0.8,
+                                                                    min=0,
+                                                                    max=1,
+                                                                    step=0.01,
+                                                                    class_name="validate-input",
+                                                                ),
+                                                            ],
+                                                            class_name="input-group",
+                                                        ),
+                                                        dbc.Row(
+                                                            [
+                                                                dbc.Label(
+                                                                    "Random seed",
+                                                                    html_for="seed-input",
+                                                                ),
+                                                                dbc.Input(
+                                                                    type="number",
+                                                                    id="seed-input",
+                                                                    placeholder="Random seed",
+                                                                    value=42,
+                                                                    min=0,
+                                                                    step=1,
+                                                                    class_name="validate-input",
+                                                                ),
+                                                            ],
+                                                            class_name="input-group",
+                                                        ),
+                                                    ],
+                                                    title="Algorithm",
+                                                )
+                                            ]
                                         ),
                                     ]
                                 )

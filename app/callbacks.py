@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import random
 import numpy as np
+import json
 
 
 def register_callbacks(app: Dash) -> Dash:
@@ -35,10 +36,13 @@ def register_callbacks(app: Dash) -> Dash:
 
     @app.callback(
         Output("gen-slider-input", "max"),
-        Input("n-gens-input", "value"),
+        Input("result-store", "data"),
     )
-    def update_slider_max(n_gens):
-        return n_gens
+    def update_slider_max(data):
+        if data:
+            df_reconstructed = pd.read_json(StringIO(data), orient="split")
+            return df_reconstructed["Generation"].max()
+        return 0
 
     @app.callback(
         Output("gen-slider-input", "disabled"),

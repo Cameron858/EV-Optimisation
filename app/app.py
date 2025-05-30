@@ -228,7 +228,35 @@ app.layout = html.Div(
                 dbc.Col(
                     [
                         dcc.Graph(id="main-output-graph"),
-                        dcc.Slider(id="gen-slider-input", min=0, step=1, value=0),
+                        html.Div(
+                            [
+                                dbc.RadioItems(
+                                    options=[
+                                        {"label": "Real", "value": "real"},
+                                        {"label": "Objective", "value": "objective"},
+                                    ],
+                                    value="real",
+                                    id="mode-toggle",
+                                    inline=True,
+                                    style={"margin-right": "20px"},
+                                ),
+                                html.Div(
+                                    dcc.Slider(
+                                        id="gen-slider-input",
+                                        min=0,
+                                        max=10,
+                                        step=1,
+                                        value=0,
+                                    ),
+                                    style={"flex": "1"},
+                                ),
+                            ],
+                            style={
+                                "display": "flex",
+                                "align-items": "center",
+                                "gap": "20px",
+                            },
+                        ),
                     ],
                     width=8,
                 ),

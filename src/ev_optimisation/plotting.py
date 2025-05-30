@@ -399,6 +399,31 @@ def create_ev_optimisation_static_frame(
     generation: int,
     mode: Literal["real", "objective"] = "objective",
 ) -> go.Figure:
+    """
+    Creates a static Plotly figure for visualizing EV optimisation results for a specific generation.
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        DataFrame containing the population data, including objective values and front assignments.
+    generation : int
+        The generation number to display in the plot title.
+    mode : {"real", "objective"}, optional
+        Determines which axes to use for the plot:
+        - "real": Plots real-world parameters (Motor Power vs Battery Capacity).
+        - "objective": Plots objective values (Range vs Time).
+        Default is "objective".
+
+    Returns
+    -------
+    go.Figure
+        A Plotly Figure object containing the scatter plot of the population, colored by Pareto front.
+
+    Notes
+    -----
+    - The function expects the DataFrame to have a "Front" column indicating Pareto front membership.
+    - Uses helper functions `_from_dataframe_group` and `_create_scatter` to process data and create traces.
+    """
     pop_array = _from_dataframe_group(data)
     max_fronts = data["Front"].unique().shape[0]
 

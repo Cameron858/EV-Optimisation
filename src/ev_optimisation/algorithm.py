@@ -417,7 +417,9 @@ def optimise_ev_population(
         )
 
         # Generate offspring and propagate species
-        q = generate_offspring(p, p_obj, fronts, crowding_distances)
+        q = generate_offspring(
+            p, p_obj, fronts, crowding_distances, crossover_rate, mutate_rate
+        )
         p = propagate_species(p, q, config)
 
     return result

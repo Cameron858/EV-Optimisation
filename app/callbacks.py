@@ -36,11 +36,15 @@ def register_callbacks(app: Dash) -> Dash:
         Input("run-btn", "n_clicks"),
         State("n-pop-input", "value"),
         State("n-gens-input", "value"),
+        State("mutation-input", "value"),
+        State("crossover-input", "value"),
         prevent_initial_call=True,
     )
-    def run_algorithm(n_clicks, n_pop, n_gens) -> dict:
+    def run_algorithm(n_clicks, n_pop, n_gens, mutation_rate, crossover_rate) -> dict:
         config = VehicleConfig()
-        result = optimise_ev_population(config, n_gens, n_pop)
+        result = optimise_ev_population(
+            config, n_gens, n_pop, mutation_rate, crossover_rate
+        )
         json_result = result_to_json(result)
         return json_result
 

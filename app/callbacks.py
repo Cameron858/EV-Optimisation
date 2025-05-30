@@ -53,6 +53,18 @@ def register_callbacks(app: Dash) -> Dash:
         except Exception:
             return True
 
+    @app.callback(
+        Output("mode-toggle", "options"),
+        Input("result-store", "data"),
+    )
+    def disable_mode_input_if_no_data(data):
+        disabled = False if data else True
+        options = [
+            {"label": "Real", "value": "real", "disabled": disabled},
+            {"label": "Objective", "value": "objective", "disabled": disabled},
+        ]
+        return options
+
     @callback(
         Output("result-store", "data"),
         Input("run-btn", "n_clicks"),

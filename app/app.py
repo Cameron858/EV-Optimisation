@@ -225,7 +225,7 @@ app.layout = html.Div(
                     width=4,
                 ),
                 # right - outputs
-                dbc.Col([dcc.Graph(id="main-output-graph")]),
+                dbc.Col([dcc.Graph(id="main-output-graph")], width=8),
             ]
         ),
     ]

@@ -231,9 +231,18 @@ app.layout = html.Div(
                         html.Div(
                             [
                                 dbc.RadioItems(
+                                    # default to disabled
                                     options=[
-                                        {"label": "Real", "value": "real"},
-                                        {"label": "Objective", "value": "objective"},
+                                        {
+                                            "label": "Real",
+                                            "value": "real",
+                                            "disabled": True,
+                                        },
+                                        {
+                                            "label": "Objective",
+                                            "value": "objective",
+                                            "disabled": True,
+                                        },
                                     ],
                                     value="real",
                                     id="mode-toggle",
@@ -247,6 +256,8 @@ app.layout = html.Div(
                                         max=10,
                                         step=1,
                                         value=0,
+                                        # default to disabled
+                                        disabled=True,
                                     ),
                                     style={"flex": "1"},
                                 ),

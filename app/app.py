@@ -99,7 +99,8 @@ app.layout = html.Div(
                                                     title="Algorithm",
                                                 ),
                                                 dbc.AccordionItem([], title="Vehicle"),
-                                            ]
+                                            ],
+                                            always_open=True,
                                         ),
                                     ]
                                 )

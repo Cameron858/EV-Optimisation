@@ -102,6 +102,24 @@ app.layout = html.Div(
                                             ],
                                             class_name="input-group",
                                         ),
+                                        dbc.Row(
+                                            [
+                                                dbc.Label(
+                                                    "Random seed",
+                                                    html_for="seed-input",
+                                                ),
+                                                dbc.Input(
+                                                    type="number",
+                                                    id="seed-input",
+                                                    placeholder="Random seed",
+                                                    value=42,
+                                                    min=0,
+                                                    step=1,
+                                                    class_name="validate-input",
+                                                ),
+                                            ],
+                                            class_name="input-group",
+                                        ),
                                     ]
                                 )
                             ],

@@ -2,6 +2,7 @@ from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
 
 from app.callbacks import register_callbacks
+from app.components import parameter_input
 
 app = Dash(
     __name__,
@@ -106,27 +107,22 @@ app.layout = html.Div(
                                                             ],
                                                             class_name="input-group",
                                                         ),
-                                                        dbc.Row(
-                                                            [
-                                                                dbc.Label(
-                                                                    "Random seed",
-                                                                    html_for="seed-input",
-                                                                ),
-                                                                dbc.Input(
-                                                                    type="number",
-                                                                    id="seed-input",
-                                                                    placeholder="Random seed",
-                                                                    value=42,
-                                                                    min=0,
-                                                                    step=1,
-                                                                    class_name="validate-input",
-                                                                ),
-                                                            ],
-                                                            class_name="input-group",
+                                                        parameter_input(
+                                                            "Random seed",
+                                                            dbc.Input(
+                                                                type="number",
+                                                                id="seed-input",
+                                                                placeholder="Random seed",
+                                                                value=42,
+                                                                min=0,
+                                                                step=1,
+                                                                class_name="validate-input",
+                                                            ),
                                                         ),
                                                     ],
                                                     title="Algorithm",
-                                                )
+                                                ),
+                                                dbc.AccordionItem([], title="Vehicle"),
                                             ]
                                         ),
                                     ]

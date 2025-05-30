@@ -253,11 +253,9 @@ def generate_offspring(
         Array indicating the front number for each individual.
     crowding_distances : np.ndarray
         Crowding distances for each individual.
-    bounds : tuple
-        Tuple containing lower and upper bounds (both np.ndarray) for variables.
-    sbx_prob : float, optional
+    crossover_rate : float, optional
         Probability of performing SBX crossover, by default 0.9.
-    mutation_prob : float, optional
+    mutate_rate : float, optional
         Probability of applying polynomial mutation to each child, by default 0.05.
 
     Returns

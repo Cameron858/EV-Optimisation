@@ -33,6 +33,13 @@ def register_callbacks(app: Dash) -> Dash:
 
         return False  # Enable button if all validations pass
 
+    @app.callback(
+        Output("gen-slider-input", "max"),
+        Input("n-gens-input", "value"),
+    )
+    def update_slider_max(n_gens):
+        return n_gens
+
     @callback(
         Output("result-store", "data"),
         Input("run-btn", "n_clicks"),

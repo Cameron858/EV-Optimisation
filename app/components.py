@@ -20,3 +20,20 @@ plot_mode_select = html.Div(
         ),
     ]
 )
+
+
+def parameter_input(title: str, input_component: dbc.Input):
+    try:
+        input_id = getattr(input_component, "id")
+    except AttributeError:
+        input_id = None
+    return dbc.Row(
+        [
+            dbc.Label(
+                title,
+                html_for=input_id,
+            ),
+            input_component,
+        ],
+        class_name="input-group",
+    )

@@ -2,7 +2,7 @@ from io import StringIO
 from dash import Dash, callback, Input, Output, State
 from ev_optimisation.adapters import result_to_json
 from ev_optimisation.algorithm import optimise_ev_population
-from ev_optimisation.plotting import create_ev_optimisation_animation
+from ev_optimisation.plotting import create_ev_optimisation_static_frame
 from ev_optimisation.vehicle import VehicleConfig
 import plotly.graph_objects as go
 import pandas as pd
@@ -72,11 +72,13 @@ def register_callbacks(app: Dash) -> Dash:
     @callback(
         Output("main-output-graph", "figure"),
         Input("result-store", "data"),
+        Input("gen-slider-input", "value"),
         prevent_initial_call=True,
     )
-    def update_figures_from_store(data) -> go.Figure:
+    def update_figures_from_store(data, generation) -> go.Figure:
         df_reconstructed = pd.read_json(StringIO(data), orient="split")
-        fig = create_ev_optimisation_animation(df_reconstructed)
+        df_filtered = df_reconstructed[df_reconstructed["Generation"] == generation]
+        fig = create_ev_optimisation_static_frame(df_filtered, generation)
         return fig
 
     return app

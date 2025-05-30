@@ -64,6 +64,25 @@ app.layout = html.Div(
                                             ],
                                             class_name="input-group",
                                         ),
+                                        dbc.Row(
+                                            [
+                                                dbc.Label(
+                                                    "Mutation rate",
+                                                    html_for="mutation-input",
+                                                ),
+                                                dbc.Input(
+                                                    type="number",
+                                                    id="mutation-input",
+                                                    placeholder="Mutation rate",
+                                                    value=0.1,
+                                                    min=0,
+                                                    max=1,
+                                                    step=0.01,
+                                                    class_name="validate-input",
+                                                ),
+                                            ],
+                                            class_name="input-group",
+                                        ),
                                     ]
                                 )
                             ],

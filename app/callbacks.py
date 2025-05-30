@@ -6,6 +6,8 @@ from ev_optimisation.plotting import create_ev_optimisation_animation
 from ev_optimisation.vehicle import VehicleConfig
 import plotly.graph_objects as go
 import pandas as pd
+import random
+import numpy as np
 
 
 def register_callbacks(app: Dash) -> Dash:
@@ -38,9 +40,17 @@ def register_callbacks(app: Dash) -> Dash:
         State("n-gens-input", "value"),
         State("mutation-input", "value"),
         State("crossover-input", "value"),
+        State("seed-input", "value"),
         prevent_initial_call=True,
     )
-    def run_algorithm(n_clicks, n_pop, n_gens, mutation_rate, crossover_rate) -> dict:
+    def run_algorithm(
+        n_clicks, n_pop, n_gens, mutation_rate, crossover_rate, seed
+    ) -> dict:
+
+        if seed is not None:
+            random.seed(seed)
+            np.random.seed(seed)
+
         config = VehicleConfig()
         result = optimise_ev_population(
             config,

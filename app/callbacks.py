@@ -40,6 +40,19 @@ def register_callbacks(app: Dash) -> Dash:
     def update_slider_max(n_gens):
         return n_gens
 
+    @app.callback(
+        Output("gen-slider-input", "disabled"),
+        Input("result-store", "data"),
+    )
+    def disable_slider_if_no_data(data):
+        if not data:
+            return True
+        try:
+            df = pd.read_json(StringIO(data), orient="split")
+            return df.empty or "Generation" not in df.columns
+        except Exception:
+            return True
+
     @callback(
         Output("result-store", "data"),
         Input("run-btn", "n_clicks"),

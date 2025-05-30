@@ -357,7 +357,12 @@ def population_to_array(population: list[Vehicle]) -> np.ndarray:
 
 
 def optimise_ev_population(
-    config, n_gens, n_pop=None, initial_population=None
+    config,
+    n_gens,
+    n_pop=None,
+    initial_population=None,
+    crossover_rate: float = 0.9,
+    mutate_rate: float = 0.05,
 ) -> dict[int, GenerationResult]:
     """
     Optimise an EV population using NSGA-II.
@@ -372,6 +377,10 @@ def optimise_ev_population(
         Number of individuals in the population. If `initial_population` is provided, this is ignored.
     initial_population : list[Vehicle], optional
         An optional initial population of vehicles. If not provided, a new population will be created.
+    crossover_rate : float, optional
+        Probability of performing SBX crossover, by default 0.9.
+    mutate_rate : float, optional
+        Probability of applying polynomial mutation to each child, by default 0.05.
 
     Returns
     -------

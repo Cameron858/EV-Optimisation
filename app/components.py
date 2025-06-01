@@ -1,5 +1,6 @@
 from dash import html
 import dash_bootstrap_components as dbc
+import plotly.graph_objects as go
 
 plot_mode_select = html.Div(
     [
@@ -37,3 +38,8 @@ def parameter_input(title: str, input_component: dbc.Input):
         ],
         class_name="input-group",
     )
+
+
+def placeholder_figure() -> go.Figure:
+    fig = go.Figure()
+    return fig

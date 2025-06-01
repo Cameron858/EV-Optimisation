@@ -275,7 +275,7 @@ app.layout = html.Div(
                                     [
                                         dcc.Graph(
                                             id="pop-stats-graph-1",
-                                            figure=placeholder_figure(),
+                                            figure=placeholder_figure(font_size=20),
                                         ),
                                     ],
                                     width=6,
@@ -284,7 +284,7 @@ app.layout = html.Div(
                                     [
                                         dcc.Graph(
                                             id="pop-stats-graph-2",
-                                            figure=placeholder_figure(),
+                                            figure=placeholder_figure(font_size=20),
                                         ),
                                     ],
                                     width=6,

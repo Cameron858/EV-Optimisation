@@ -40,7 +40,7 @@ def parameter_input(title: str, input_component: dbc.Input):
     )
 
 
-def placeholder_figure() -> go.Figure:
+def placeholder_figure(font_size: int = 32) -> go.Figure:
     """
     Creates a placeholder Plotly figure with no data and a 'No results found. Run model to display data.' annotation.
 
@@ -70,7 +70,7 @@ def placeholder_figure() -> go.Figure:
                     "xref": "paper",
                     "yref": "paper",
                     "showarrow": False,
-                    "font": {"size": 32, "color": "white"},
+                    "font": {"size": font_size, "color": "white"},
                     "align": "center",
                 }
             ],

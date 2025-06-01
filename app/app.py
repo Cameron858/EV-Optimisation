@@ -268,6 +268,30 @@ app.layout = html.Div(
                                 "gap": "20px",
                             },
                         ),
+                        # pop stats graphs
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    [
+                                        dcc.Graph(
+                                            id="pop-stats-graph-1",
+                                            figure=placeholder_figure(),
+                                        ),
+                                    ],
+                                    width=6,
+                                ),
+                                dbc.Col(
+                                    [
+                                        dcc.Graph(
+                                            id="pop-stats-graph-2",
+                                            figure=placeholder_figure(),
+                                        ),
+                                    ],
+                                    width=6,
+                                ),
+                            ],
+                            class_name="justify-content-between",
+                        ),
                     ],
                     width=8,
                 ),

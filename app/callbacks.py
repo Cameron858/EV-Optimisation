@@ -105,7 +105,7 @@ def register_callbacks(app: Dash) -> Dash:
         Input("mode-toggle", "value"),
         prevent_initial_call=True,
     )
-    def update_figures_from_store(data, generation, plot_mode) -> go.Figure:
+    def update_result_graph_from_store(data, generation, plot_mode) -> go.Figure:
         df_reconstructed = pd.read_json(StringIO(data), orient="split")
         df_filtered = df_reconstructed[df_reconstructed["Generation"] == generation]
         fig = create_ev_optimisation_static_frame(df_filtered, generation, plot_mode)

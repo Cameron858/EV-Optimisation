@@ -41,5 +41,39 @@ def parameter_input(title: str, input_component: dbc.Input):
 
 
 def placeholder_figure() -> go.Figure:
-    fig = go.Figure()
+    """
+    Creates a placeholder Plotly figure with no data and a 'No Data' annotation.
+
+    Returns
+    -------
+    go.Figure
+        A Plotly Figure object with hidden axes, grey background, and a centered 'No Data' message.
+    """
+    fig = go.Figure(
+        layout={
+            "xaxis": {
+                "showticklabels": False,
+                "showgrid": False,
+                "zeroline": False,
+            },
+            "yaxis": {
+                "showticklabels": False,
+                "showgrid": False,
+                "zeroline": False,
+            },
+            "plot_bgcolor": "#888888",
+            "annotations": [
+                {
+                    "text": "No Data",  # Customize as needed
+                    "x": 0.5,
+                    "y": 0.5,
+                    "xref": "paper",
+                    "yref": "paper",
+                    "showarrow": False,
+                    "font": {"size": 32, "color": "white"},
+                    "align": "center",
+                }
+            ],
+        }
+    )
     return fig

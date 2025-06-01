@@ -244,7 +244,7 @@ app.layout = html.Div(
                                             "disabled": True,
                                         },
                                     ],
-                                    value="real",
+                                    value="objective",
                                     id="mode-toggle",
                                     inline=True,
                                     style={"margin-right": "20px"},

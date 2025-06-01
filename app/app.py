@@ -2,7 +2,7 @@ from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
 
 from app.callbacks import register_callbacks
-from app.components import parameter_input
+from app.components import parameter_input, placeholder_figure
 
 app = Dash(
     __name__,
@@ -227,7 +227,7 @@ app.layout = html.Div(
                 # right - outputs
                 dbc.Col(
                     [
-                        dcc.Graph(id="main-output-graph"),
+                        dcc.Graph(id="main-output-graph", figure=placeholder_figure()),
                         html.Div(
                             [
                                 dbc.RadioItems(

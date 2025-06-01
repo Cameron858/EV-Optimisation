@@ -42,12 +42,12 @@ def parameter_input(title: str, input_component: dbc.Input):
 
 def placeholder_figure() -> go.Figure:
     """
-    Creates a placeholder Plotly figure with no data and a 'No Data' annotation.
+    Creates a placeholder Plotly figure with no data and a 'No results found. Run model to display data.' annotation.
 
     Returns
     -------
     go.Figure
-        A Plotly Figure object with hidden axes, grey background, and a centered 'No Data' message.
+        A Plotly Figure object with hidden axes, grey background, and a centered 'No results found. Run model to display data.' message.
     """
     fig = go.Figure(
         layout={
@@ -64,7 +64,7 @@ def placeholder_figure() -> go.Figure:
             "plot_bgcolor": "#888888",
             "annotations": [
                 {
-                    "text": "No Data",  # Customize as needed
+                    "text": "No results found. Run model to display data.",  # Customize as needed
                     "x": 0.5,
                     "y": 0.5,
                     "xref": "paper",

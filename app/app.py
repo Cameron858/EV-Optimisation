@@ -89,6 +89,7 @@ app.layout = html.Div(
                                                                 type="number",
                                                                 id="seed-input",
                                                                 placeholder="Random seed",
+                                                                # What other value would I use?
                                                                 value=42,
                                                                 min=0,
                                                                 step=1,

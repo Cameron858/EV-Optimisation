@@ -20,6 +20,16 @@ app.layout = html.Div(
                 # left - inputs
                 dbc.Col(
                     [
+                        # button "toolbar"
+                        dbc.Row(
+                            [
+                                dbc.Button(
+                                    "Run Optimiser",
+                                    id="run-btn",
+                                    class_name="m-1 btn-lightseagreen",
+                                ),
+                            ]
+                        ),
                         dbc.Card(
                             [
                                 dbc.CardBody(
@@ -215,11 +225,6 @@ app.layout = html.Div(
                                 )
                             ],
                             class_name="m-3",
-                        ),
-                        dbc.Button(
-                            "Run Optimiser",
-                            id="run-btn",
-                            class_name="m-1 btn-lightseagreen",
                         ),
                     ],
                     # takes up 1/3

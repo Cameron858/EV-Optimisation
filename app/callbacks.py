@@ -1,6 +1,7 @@
 from io import StringIO
 from dash import Dash, callback, Input, Output, State
 from ev_optimisation.adapters import result_to_json
+from ev_optimisation.adapters.dash_adapters import load_and_filter_generation
 from ev_optimisation.algorithm import optimise_ev_population
 from ev_optimisation.plotting import create_ev_optimisation_static_frame
 from ev_optimisation.vehicle import VehicleConfig
@@ -120,9 +121,7 @@ def register_callbacks(app: Dash) -> Dash:
         prevent_initial_call=True,
     )
     def update_pop_stats_graph_1(data, generation, plot_mode) -> go.Figure:
-        df_reconstructed = pd.read_json(StringIO(data), orient="split")
-        df_reconstructed["Range"] *= -1
-        df_filtered = df_reconstructed[df_reconstructed["Generation"] == generation]
+        df_filtered = load_and_filter_generation(data, generation)
 
         # set up vars based on plotting mode
         if plot_mode == "real":
@@ -157,9 +156,7 @@ def register_callbacks(app: Dash) -> Dash:
         prevent_initial_call=True,
     )
     def update_pop_stats_graph_2(data, generation, plot_mode) -> go.Figure:
-        df_reconstructed = pd.read_json(StringIO(data), orient="split")
-        df_reconstructed["Range"] *= -1
-        df_filtered = df_reconstructed[df_reconstructed["Generation"] == generation]
+        df_filtered = load_and_filter_generation(data, generation)
 
         # set up vars based on plotting mode
         if plot_mode == "real":

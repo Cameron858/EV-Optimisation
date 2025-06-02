@@ -195,9 +195,10 @@ def register_callbacks(app: Dash) -> Dash:
         Output("offcanvas", "children"),
         Input("main-output-graph", "clickData"),
         State("result-store", "data"),
+        State("gen-slider-input", "value"),
         prevent_initial_call=True,
     )
-    def update_offcanvas_contents(click_data, data):
+    def update_offcanvas_contents(click_data, data, generation):
         # power, capacity, mass, range, time
         custom_data = click_data["points"][0]["customdata"]
         meta_data_dict = {
@@ -205,16 +206,19 @@ def register_callbacks(app: Dash) -> Dash:
             for k, v in zip(["power", "capacity", "mass", "range", "time"], custom_data)
         }
         meta_data_dict["front"] = click_data["points"][0]["curveNumber"] + 1
+        meta_data_dict["generation"] = generation
+
         return {}, html.Div(
             [
                 html.Ul(
                     [
+                        html.Li(f"Generation: {meta_data_dict['generation']}"),
+                        html.Li(f"Front: {meta_data_dict['front']}"),
                         html.Li(f"Power: {meta_data_dict['power']} kW"),
                         html.Li(f"Capacity: {meta_data_dict['capacity']} kWh"),
                         html.Li(f"Mass: {meta_data_dict['mass']} kg"),
                         html.Li(f"Range: {meta_data_dict['range']} km"),
                         html.Li(f"Time: {meta_data_dict['time']} s"),
-                        html.Li(f"Front: {meta_data_dict['front']}"),
                     ]
                 ),
             ]

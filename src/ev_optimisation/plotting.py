@@ -120,7 +120,7 @@ def _create_scatter(
         name=trace_name,
         marker={"size": marker_sizes},
         hovertemplate=hovertemplate,
-        customdata=data,
+        customdata=list(data),
     )
 
 

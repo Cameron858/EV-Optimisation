@@ -94,7 +94,6 @@ def _create_scatter(
         x = data[:, 0]  # Power
         y = data[:, 1]  # Capacity
         hovertemplate = (
-            "Index: %{customdata[5]}<br>"
             "Power: %{x:.2f} kW<br>"
             "Capacity: %{y:.2f} kWh<br>"
             "Mass: %{customdata[2]:.2f} kg<br>"
@@ -105,7 +104,6 @@ def _create_scatter(
         x = data[:, 3]  # Range
         y = data[:, 4]  # Time
         hovertemplate = (
-            "Index: %{customdata[5]}<br>"
             "Range: %{x:.2f} km<br>"
             "Time: %{y:.2f} s<br>"
             "Mass: %{customdata[2]:.2f} kg<br>"

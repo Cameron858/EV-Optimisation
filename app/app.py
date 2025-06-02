@@ -304,7 +304,16 @@ app.layout = html.Div(
                     width=8,
                 ),
                 dbc.Offcanvas(
-                    [html.P("Some offcanvas content...")],
+                    [
+                        html.P("Some offcanvas content..."),
+                        html.Pre(
+                            id="click-data-pre",
+                            style={
+                                "border": "thin lightgrey solid",
+                                "overflowX": "scroll",
+                            },
+                        ),
+                    ],
                     id="offcanvas",
                     title="Offcanvas",
                     is_open=False,

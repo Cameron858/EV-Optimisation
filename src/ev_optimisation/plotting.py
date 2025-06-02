@@ -304,26 +304,6 @@ def extract_generation_populations(
     return generations_data
 
 
-def _create_frame(pop_array, generation, max_fronts, mode):
-    traces = []
-    for front in range(1, max_fronts + 1):
-        front_idxs = np.where(pop_array[:, -1] == front)
-        name = f"Front {int(front)}"
-
-        if front_idxs[0].size != 0:
-            front_members = pop_array[front_idxs]
-            trace = _create_scatter(front_members, name, mode=mode)
-        else:
-            trace = go.Scatter(name=name, x=[], y=[])
-
-        traces.append(trace)
-
-    return go.Frame(
-        data=traces,
-        layout=go.Layout(title_text=f"EV Optimisation - Generation: {generation}"),
-    )
-
-
 def create_ev_optimisation_static_frame(
     data: pd.DataFrame,
     generation: int,

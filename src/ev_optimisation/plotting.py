@@ -258,7 +258,6 @@ def _from_dataframe_group(df_gen: pd.DataFrame) -> np.ndarray:
     Expects columns: 'Motor Power (kW)', 'Battery Capacity (kWh)', 'Mass (kg)', 'Front', 'Range', 'Time'
     """
     df_gen = df_gen.copy()
-    df_gen["Range"] = -df_gen["Range"]
     return df_gen[
         [
             "Motor Power (kW)",

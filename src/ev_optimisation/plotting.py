@@ -89,39 +89,38 @@ def _create_scatter(
         A Plotly Scatter trace object.
     """
     marker_sizes = _calculate_marker_sizes(data[:, 2])
+
     if mode == "real":
-        x = data[:, 0]
-        y = data[:, 1]
+        x = data[:, 0]  # Power
+        y = data[:, 1]  # Capacity
         hovertemplate = (
+            "Index: %{customdata[5]}<br>"
             "Power: %{x:.2f} kW<br>"
             "Capacity: %{y:.2f} kWh<br>"
-            "Mass: %{meta[0]:.2f} kg<br>"
-            "Range: %{meta[1]:.2f} km<br>"
-            "Time: %{meta[2]:.2f} s<br>"
+            "Mass: %{customdata[2]:.2f} kg<br>"
+            "Range: %{customdata[3]:.2f} km<br>"
+            "Time: %{customdata[4]:.2f} s<br><extra></extra>"
         )
-        meta = data[:, 2:5]
-    # mode == "objective"
     else:
-        x = data[:, 3]
-        y = data[:, 4]
+        x = data[:, 3]  # Range
+        y = data[:, 4]  # Time
         hovertemplate = (
+            "Index: %{customdata[5]}<br>"
             "Range: %{x:.2f} km<br>"
             "Time: %{y:.2f} s<br>"
-            "Power: %{meta[0]:.2f} kW<br>"
-            "Capacity: %{meta[1]:.2f} kWh<br>"
-            "Mass: %{meta[2]:.2f} kg<br>"
+            "Mass: %{customdata[2]:.2f} kg<br>"
+            "Power: %{customdata[0]:.2f} kW<br>"
+            "Capacity: %{customdata[1]:.2f} kWh<br><extra></extra>"
         )
-        meta = data[:, [0, 1, 2]]
 
     return go.Scatter(
         x=x,
         y=y,
         mode="markers",
-        marker={"size": marker_sizes},
         name=trace_name,
+        marker={"size": marker_sizes},
         hovertemplate=hovertemplate,
-        meta=meta,
-        showlegend=True,
+        customdata=data,
     )
 
 
@@ -226,29 +225,6 @@ def save_plotly_figure(fig: go.Figure, file_name: str) -> None:
         print(f"Figure saved successfully to {file_path}")
     except ValueError as e:
         print(f"Error saving figure: {e}")
-
-
-def _from_generation_result(r: GenerationResult) -> np.ndarray:
-    """
-    Create a pop_array from a GenerationResult.
-
-    Returns a numpy array of shape (n_individuals, 6):
-    [motor_power, battery_capacity, mass, range, time, front]
-    """
-    pop_array = np.array(
-        [
-            (
-                v.motor_power,
-                v.battery_capacity,
-                v.mass(),
-                -r.objectives[i, 0],  # Range (negated)
-                r.objectives[i, 1],  # Time
-                r.fronts[i],  # Front
-            )
-            for i, v in enumerate(r.population)
-        ]
-    )
-    return pop_array
 
 
 def _from_dataframe_group(df_gen: pd.DataFrame) -> np.ndarray:

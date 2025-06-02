@@ -1,5 +1,5 @@
 from io import StringIO
-from dash import Dash, callback, Input, Output, State
+from dash import Dash, callback, Input, Output, State, html
 from ev_optimisation.adapters import result_to_json
 from ev_optimisation.adapters.dash_adapters import load_and_filter_generation
 from ev_optimisation.algorithm import optimise_ev_population
@@ -191,8 +191,8 @@ def register_callbacks(app: Dash) -> Dash:
         return True
 
     @app.callback(
-        Output("click-data-pre", "children"),
         Output("main-output-graph", "clickData"),
+        Output("offcanvas", "children"),
         Input("main-output-graph", "clickData"),
         State("result-store", "data"),
         prevent_initial_call=True,
@@ -204,7 +204,20 @@ def register_callbacks(app: Dash) -> Dash:
             k: v
             for k, v in zip(["power", "capacity", "mass", "range", "time"], custom_data)
         }
-        print(f"{meta_data_dict=}")
-        return json.dumps(meta_data_dict, indent=2), {}
+        meta_data_dict["front"] = click_data["points"][0]["curveNumber"] + 1
+        return {}, html.Div(
+            [
+                html.Ul(
+                    [
+                        html.Li(f"Power: {meta_data_dict['power']} kW"),
+                        html.Li(f"Capacity: {meta_data_dict['capacity']} kWh"),
+                        html.Li(f"Mass: {meta_data_dict['mass']} kg"),
+                        html.Li(f"Range: {meta_data_dict['range']} km"),
+                        html.Li(f"Time: {meta_data_dict['time']} s"),
+                        html.Li(f"Front: {meta_data_dict['front']}"),
+                    ]
+                ),
+            ]
+        )
 
     return app

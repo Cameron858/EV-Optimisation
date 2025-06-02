@@ -27,8 +27,10 @@ app.layout = html.Div(
                                     "Run Optimiser",
                                     id="run-btn",
                                     class_name="m-1 btn-lightseagreen",
+                                    style={"max-width": "200px"},
                                 ),
-                            ]
+                            ],
+                            class_name="m-3",
                         ),
                         dbc.Card(
                             [

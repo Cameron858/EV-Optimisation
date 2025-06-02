@@ -187,7 +187,7 @@ def register_callbacks(app: Dash) -> Dash:
         Input("main-output-graph", "clickData"),
         prevent_initial_call=True,
     )
-    def update_side_panel_with_click_data(click_data):
+    def open_offcanvas(click_data):
         return True
 
     return app

@@ -303,6 +303,13 @@ app.layout = html.Div(
                     ],
                     width=8,
                 ),
+                dbc.Offcanvas(
+                    [html.P("Some offcanvas content...")],
+                    id="offcanvas",
+                    title="Offcanvas",
+                    is_open=False,
+                    placement="end",
+                ),
             ]
         ),
     ]

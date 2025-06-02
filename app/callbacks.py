@@ -5,6 +5,7 @@ from ev_optimisation.algorithm import optimise_ev_population
 from ev_optimisation.plotting import create_ev_optimisation_static_frame
 from ev_optimisation.vehicle import VehicleConfig
 import plotly.graph_objects as go
+import plotly.figure_factory as ff
 import pandas as pd
 import random
 import numpy as np
@@ -109,6 +110,80 @@ def register_callbacks(app: Dash) -> Dash:
         df_reconstructed = pd.read_json(StringIO(data), orient="split")
         df_filtered = df_reconstructed[df_reconstructed["Generation"] == generation]
         fig = create_ev_optimisation_static_frame(df_filtered, generation, plot_mode)
+        return fig
+
+    @callback(
+        Output("pop-stats-graph-1", "figure"),
+        Input("result-store", "data"),
+        Input("gen-slider-input", "value"),
+        Input("mode-toggle", "value"),
+        prevent_initial_call=True,
+    )
+    def update_pop_stats_graph_1(data, generation, plot_mode) -> go.Figure:
+        df_reconstructed = pd.read_json(StringIO(data), orient="split")
+        df_reconstructed["Range"] *= -1
+        df_filtered = df_reconstructed[df_reconstructed["Generation"] == generation]
+
+        # set up vars based on plotting mode
+        if plot_mode == "real":
+            column = "Motor Power (kW)"
+            xaxis_label = column
+        else:
+            column = "Range"
+            xaxis_label = "Range (km)"
+
+        fig = ff.create_distplot(
+            [
+                df_filtered[column].to_numpy(),
+            ],
+            [column],
+            bin_size=0.1,
+            show_rug=False,
+            show_hist=False,
+        )
+
+        fig.update_layout(
+            title=f"{column} - Generation {generation}",
+            showlegend=False,
+            xaxis={"title": xaxis_label},
+        )
+        return fig
+
+    @callback(
+        Output("pop-stats-graph-2", "figure"),
+        Input("result-store", "data"),
+        Input("gen-slider-input", "value"),
+        Input("mode-toggle", "value"),
+        prevent_initial_call=True,
+    )
+    def update_pop_stats_graph_2(data, generation, plot_mode) -> go.Figure:
+        df_reconstructed = pd.read_json(StringIO(data), orient="split")
+        df_reconstructed["Range"] *= -1
+        df_filtered = df_reconstructed[df_reconstructed["Generation"] == generation]
+
+        # set up vars based on plotting mode
+        if plot_mode == "real":
+            column = "Battery Capacity (kWh)"
+            xaxis_label = column
+        else:
+            column = "Time"
+            xaxis_label = "Time (s)"
+
+        fig = ff.create_distplot(
+            [
+                df_filtered[column].to_numpy(),
+            ],
+            [column],
+            bin_size=0.1,
+            show_rug=False,
+            show_hist=False,
+        )
+
+        fig.update_layout(
+            title=f"{column} - Generation {generation}",
+            showlegend=False,
+            xaxis={"title": xaxis_label},
+        )
         return fig
 
     return app

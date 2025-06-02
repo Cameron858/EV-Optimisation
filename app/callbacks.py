@@ -190,4 +190,12 @@ def register_callbacks(app: Dash) -> Dash:
     def open_offcanvas(click_data):
         return True
 
+    @app.callback(
+        Output("click-data-pre", "children"),
+        Input("main-output-graph", "clickData"),
+        prevent_initial_call=True,
+    )
+    def update_offcanvas_contents(click_data):
+        return json.dumps(click_data)
+
     return app

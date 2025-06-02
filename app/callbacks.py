@@ -192,13 +192,19 @@ def register_callbacks(app: Dash) -> Dash:
 
     @app.callback(
         Output("click-data-pre", "children"),
+        Output("main-output-graph", "clickData"),
         Input("main-output-graph", "clickData"),
         State("result-store", "data"),
         prevent_initial_call=True,
     )
     def update_offcanvas_contents(click_data, data):
-        click_data = json.dumps(click_data)
-        print(f"{click_data=}")
-        return click_data
+        # power, capacity, mass, range, time
+        custom_data = click_data["points"][0]["customdata"]
+        meta_data_dict = {
+            k: v
+            for k, v in zip(["power", "capacity", "mass", "range", "time"], custom_data)
+        }
+        print(f"{meta_data_dict=}")
+        return json.dumps(meta_data_dict, indent=2), {}
 
     return app

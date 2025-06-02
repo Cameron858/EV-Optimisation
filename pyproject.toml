@@ -21,6 +21,7 @@ kaleido = "0.2.1"
 dash = "^3.0.4"
 dash-bootstrap-components = "^2.0.2"
 invoke = "^2.2.0"
+scipy = "^1.15.3"
 
 [build-system]
 requires = ["poetry-core"]

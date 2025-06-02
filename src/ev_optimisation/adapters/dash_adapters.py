@@ -1,3 +1,4 @@
+from io import StringIO
 from ev_optimisation.vehicle import GenerationResult
 import numpy as np
 import pandas as pd
@@ -43,3 +44,31 @@ def result_to_json(result: dict[int, GenerationResult]) -> dict:
     df["Front"] = df["Front"].astype(np.uint8)
 
     return df.reset_index(drop=True).to_json(orient="split")
+
+
+def load_and_filter_generation(
+    data: str, generation: int | None = None
+) -> pd.DataFrame:
+    """
+    Load and optionally filter EV optimisation results from a JSON-encoded string.
+
+    Parameters
+    ----------
+    data : str
+        JSON string in pandas "split" orientation format, typically from dcc.Store.
+    generation : int, optional
+        If provided, filter the DataFrame to include only rows from the specified generation.
+        If None, no filtering is applied.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with the "Range" column negated and optionally filtered by generation.
+    """
+    df = pd.read_json(StringIO(data), orient="split")
+    df["Range"] *= -1
+
+    if generation is not None:
+        df = df[df["Generation"] == generation]
+
+    return df

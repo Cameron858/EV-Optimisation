@@ -28,11 +28,13 @@ app.layout = html.Div(
                                     [
                                         dbc.Button(
                                             [
-                                                html.I(className="bi bi-trash me-2"),
-                                                "Clear data",
+                                                html.I(
+                                                    className="bi bi-rocket-takeoff me-2"
+                                                ),
+                                                "Run Optimiser",
                                             ],
-                                            color="danger",
-                                            id="clear-store-btn",
+                                            color="success",
+                                            id="run-btn",
                                             class_name="m-1",
                                         ),
                                     ],
@@ -43,13 +45,11 @@ app.layout = html.Div(
                                     [
                                         dbc.Button(
                                             [
-                                                html.I(
-                                                    className="bi bi-rocket-takeoff me-2"
-                                                ),
-                                                "Run Optimiser",
+                                                html.I(className="bi bi-trash me-2"),
+                                                "Clear data",
                                             ],
-                                            color="success",
-                                            id="run-btn",
+                                            color="danger",
+                                            id="clear-store-btn",
                                             class_name="m-1",
                                         ),
                                     ],

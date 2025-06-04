@@ -25,14 +25,16 @@ app.layout = html.Div(
                             [
                                 dbc.Button(
                                     "Clear data",
+                                    color="danger",
                                     id="clear-store-btn",
-                                    class_name="m-1 btn-lightseagreen",
+                                    class_name="m-1",
                                     style={"max-width": "200px"},
                                 ),
                                 dbc.Button(
                                     "Run Optimiser",
+                                    color="success",
                                     id="run-btn",
-                                    class_name="m-1 btn-lightseagreen",
+                                    class_name="m-1",
                                     style={"max-width": "200px"},
                                 ),
                             ],

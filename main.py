@@ -13,4 +13,5 @@ logging.basicConfig(
 logger = logging.getLogger("main")
 
 if __name__ == "__main__":
+    logger.info("Running app in debug mode")
     app.run(debug=True, dev_tools_ui=True)

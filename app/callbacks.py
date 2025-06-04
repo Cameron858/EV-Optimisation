@@ -120,6 +120,9 @@ def register_callbacks(app: Dash) -> Dash:
         prevent_initial_call=True,
     )
     def update_result_graph_from_store(data, generation, plot_mode) -> go.Figure:
+        if data is None:
+            return placeholder_figure()
+
         df_filtered = load_and_filter_generation(data, generation)
         fig = create_ev_optimisation_static_frame(df_filtered, generation, plot_mode)
         return fig
@@ -132,6 +135,9 @@ def register_callbacks(app: Dash) -> Dash:
         prevent_initial_call=True,
     )
     def update_pop_stats_graph_1(data, generation, plot_mode) -> go.Figure:
+        if data is None:
+            return placeholder_figure()
+
         df_filtered = load_and_filter_generation(data, generation)
 
         # set up vars based on plotting mode
@@ -167,6 +173,9 @@ def register_callbacks(app: Dash) -> Dash:
         prevent_initial_call=True,
     )
     def update_pop_stats_graph_2(data, generation, plot_mode) -> go.Figure:
+        if data is None:
+            return placeholder_figure()
+
         df_filtered = load_and_filter_generation(data, generation)
 
         # set up vars based on plotting mode

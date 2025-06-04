@@ -3,6 +3,7 @@ from typing import Any, Literal
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import plotly.figure_factory as ff
 import plotly.graph_objects as go
 from pyprojroot import here
 
@@ -309,3 +310,41 @@ def create_ev_optimisation_static_frame(
             title={"text": f"EV Optimisation - Generation {generation}"},
         ),
     )
+
+
+def create_distribution_figure(
+    df: pd.DataFrame, column: str, xaxis_label: str, generation: int
+) -> go.Figure:
+    """
+    Create a distribution plot for a specified column in a DataFrame using Plotly.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The input DataFrame containing the data to plot.
+    column : str
+        The name of the column in the DataFrame to plot the distribution for.
+    xaxis_label : str
+        The label to display on the x-axis of the plot.
+    generation : int
+        The generation number to include in the plot title.
+
+    Returns
+    -------
+    go.Figure
+        A Plotly Figure object representing the distribution plot.
+    """
+    fig = ff.create_distplot(
+        [df[column].to_numpy()],
+        [column],
+        bin_size=0.1,
+        show_rug=False,
+        show_hist=False,
+    )
+
+    fig.update_layout(
+        title=f"{column} - Generation {generation}",
+        showlegend=False,
+        xaxis={"title": xaxis_label},
+    )
+    return fig

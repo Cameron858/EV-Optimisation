@@ -130,7 +130,7 @@ def register_callbacks(app: Dash) -> Dash:
     )
     def update_pop_stats_graph_1(data, generation, plot_mode) -> go.Figure:
         if data is None:
-            return placeholder_figure()
+            return placeholder_figure(font_size=20)
 
         df_filtered = load_and_filter_generation(data, generation)
 
@@ -168,7 +168,7 @@ def register_callbacks(app: Dash) -> Dash:
     )
     def update_pop_stats_graph_2(data, generation, plot_mode) -> go.Figure:
         if data is None:
-            return placeholder_figure()
+            return placeholder_figure(font_size=20)
 
         df_filtered = load_and_filter_generation(data, generation)
 

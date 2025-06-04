@@ -7,7 +7,7 @@ from app.components import parameter_input, placeholder_figure
 app = Dash(
     __name__,
     title="EV Optimiser",
-    external_stylesheets=[dbc.themes.BOOTSTRAP],
+    external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP],
     suppress_callback_exceptions=True,
 )
 
@@ -24,14 +24,20 @@ app.layout = html.Div(
                         dbc.Row(
                             [
                                 dbc.Button(
-                                    "Clear data",
+                                    [
+                                        html.I(className="bi bi-trash me-2"),
+                                        "Clear data",
+                                    ],
                                     color="danger",
                                     id="clear-store-btn",
                                     class_name="m-1",
                                     style={"max-width": "150px"},
                                 ),
                                 dbc.Button(
-                                    "Run Optimiser",
+                                    [
+                                        html.I(className="bi bi-rocket-takeoff me-2"),
+                                        "Run Optimiser",
+                                    ],
                                     color="success",
                                     id="run-btn",
                                     class_name="m-1",

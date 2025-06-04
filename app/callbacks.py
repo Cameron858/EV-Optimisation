@@ -10,7 +10,9 @@ import plotly.figure_factory as ff
 import pandas as pd
 import random
 import numpy as np
-import json
+import logging
+
+logger = logging.getLogger("main")
 
 
 def register_callbacks(app: Dash) -> Dash:
@@ -84,6 +86,7 @@ def register_callbacks(app: Dash) -> Dash:
     def run_algorithm(
         n_clicks, n_pop, n_gens, mutation_rate, crossover_rate, seed
     ) -> dict:
+        logger.debug("Running algorithm")
 
         if seed is not None:
             random.seed(seed)
@@ -223,5 +226,15 @@ def register_callbacks(app: Dash) -> Dash:
                 ),
             ]
         )
+
+    @app.callback(
+        Output("result-store", "data", allow_duplicate=True),
+        Input("clear-store-btn", "n_clicks"),
+        prevent_initial_call=True,
+    )
+    def clear_data_store(n_clicks):
+        logger.debug(f"Clearing data store {n_clicks}")
+        if n_clicks:
+            return ""
 
     return app

@@ -14,12 +14,6 @@ from ev_optimisation.adapters.dash_adapters import load_and_filter_generation
 from ev_optimisation.algorithm import optimise_ev_population
 from ev_optimisation.plotting import create_ev_optimisation_static_frame
 from ev_optimisation.vehicle import VehicleConfig
-import plotly.graph_objects as go
-import plotly.figure_factory as ff
-import pandas as pd
-import random
-import numpy as np
-import logging
 
 logger = logging.getLogger("main")
 
@@ -251,7 +245,7 @@ def register_callbacks(app: Dash) -> Dash:
         prevent_initial_call=True,
     )
     def clear_data_store(n_clicks):
-        logger.debug(f"Clearing data store {n_clicks}")
+        logger.debug(f"Clearing data store")
         if n_clicks:
             return None
 

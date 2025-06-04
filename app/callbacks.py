@@ -12,7 +12,10 @@ from app.components import placeholder_figure
 from ev_optimisation.adapters import result_to_json
 from ev_optimisation.adapters.dash_adapters import load_and_filter_generation
 from ev_optimisation.algorithm import optimise_ev_population
-from ev_optimisation.plotting import create_ev_optimisation_static_frame
+from ev_optimisation.plotting import (
+    create_distribution_figure,
+    create_ev_optimisation_static_frame,
+)
 from ev_optimisation.vehicle import VehicleConfig
 
 logger = logging.getLogger("main")
@@ -142,21 +145,7 @@ def register_callbacks(app: Dash) -> Dash:
             column = "Range"
             xaxis_label = "Range (km)"
 
-        fig = ff.create_distplot(
-            [
-                df_filtered[column].to_numpy(),
-            ],
-            [column],
-            bin_size=0.1,
-            show_rug=False,
-            show_hist=False,
-        )
-
-        fig.update_layout(
-            title=f"{column} - Generation {generation}",
-            showlegend=False,
-            xaxis={"title": xaxis_label},
-        )
+        fig = create_distribution_figure(df_filtered, column, xaxis_label, generation)
         return fig
 
     @callback(
@@ -180,21 +169,7 @@ def register_callbacks(app: Dash) -> Dash:
             column = "Time"
             xaxis_label = "Time (s)"
 
-        fig = ff.create_distplot(
-            [
-                df_filtered[column].to_numpy(),
-            ],
-            [column],
-            bin_size=0.1,
-            show_rug=False,
-            show_hist=False,
-        )
-
-        fig.update_layout(
-            title=f"{column} - Generation {generation}",
-            showlegend=False,
-            xaxis={"title": xaxis_label},
-        )
+        fig = create_distribution_figure(df_filtered, column, xaxis_label, generation)
         return fig
 
     @app.callback(

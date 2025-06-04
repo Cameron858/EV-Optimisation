@@ -1,7 +1,8 @@
 import random
 
-from ev_optimisation.vehicle import Vehicle
 import numpy as np
+
+from ev_optimisation.vehicle import Vehicle
 
 
 def polynomial_mutation(x: float, bounds: tuple, eta: int = 20) -> float:

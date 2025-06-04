@@ -1,7 +1,9 @@
 from io import StringIO
-from ev_optimisation.vehicle import GenerationResult
+
 import numpy as np
 import pandas as pd
+
+from ev_optimisation.vehicle import GenerationResult
 
 
 def result_to_json(result: dict[int, GenerationResult]) -> dict:

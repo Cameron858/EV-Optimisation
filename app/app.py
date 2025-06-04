@@ -1,5 +1,5 @@
-from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
+from dash import Dash, dcc, html
 
 from app.callbacks import register_callbacks
 from app.components import parameter_input, placeholder_figure

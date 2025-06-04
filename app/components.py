@@ -1,6 +1,6 @@
-from dash import html
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
+from dash import html
 
 plot_mode_select = html.Div(
     [

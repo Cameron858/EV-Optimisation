@@ -1,8 +1,10 @@
 from itertools import permutations
-from ev_optimisation.vehicle import Vehicle
-from ev_optimisation.operators import mutate, sbx_crossover
+
 import numpy as np
 import pytest
+
+from ev_optimisation.operators import mutate, sbx_crossover
+from ev_optimisation.vehicle import Vehicle
 
 
 @pytest.mark.parametrize(

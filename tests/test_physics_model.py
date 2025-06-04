@@ -1,12 +1,13 @@
+import pytest
+
 from ev_optimisation.physics_model import (
+    coeff_rolling_resistance,
     drag_force,
     kmh_to_ms,
     rolling_resistance_force,
     rpm_to_rads,
-    coeff_rolling_resistance,
     time_to_battery_drain,
 )
-import pytest
 
 
 @pytest.mark.parametrize("rpm, expected_rads", [(1, 0.10472), (6000, 628.3)])

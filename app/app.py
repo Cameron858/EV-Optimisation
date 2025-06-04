@@ -23,25 +23,38 @@ app.layout = html.Div(
                         # button "toolbar"
                         dbc.Row(
                             [
-                                dbc.Button(
+                                # use columns to control the button width
+                                dbc.Col(
                                     [
-                                        html.I(className="bi bi-trash me-2"),
-                                        "Clear data",
+                                        dbc.Button(
+                                            [
+                                                html.I(className="bi bi-trash me-2"),
+                                                "Clear data",
+                                            ],
+                                            color="danger",
+                                            id="clear-store-btn",
+                                            class_name="m-1",
+                                        ),
                                     ],
-                                    color="danger",
-                                    id="clear-store-btn",
-                                    class_name="m-1",
-                                    style={"max-width": "150px"},
+                                    width="auto",
+                                    class_name="p-0",
                                 ),
-                                dbc.Button(
+                                dbc.Col(
                                     [
-                                        html.I(className="bi bi-rocket-takeoff me-2"),
-                                        "Run Optimiser",
+                                        dbc.Button(
+                                            [
+                                                html.I(
+                                                    className="bi bi-rocket-takeoff me-2"
+                                                ),
+                                                "Run Optimiser",
+                                            ],
+                                            color="success",
+                                            id="run-btn",
+                                            class_name="m-1",
+                                        ),
                                     ],
-                                    color="success",
-                                    id="run-btn",
-                                    class_name="m-1",
-                                    style={"max-width": "150px"},
+                                    width="auto",
+                                    class_name="p-0",
                                 ),
                             ],
                             class_name="m-3",

@@ -1,4 +1,5 @@
 import pytest
+
 from ev_optimisation.vehicle import Vehicle
 
 

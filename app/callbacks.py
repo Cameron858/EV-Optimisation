@@ -1,5 +1,14 @@
+import logging
+import random
 from io import StringIO
-from dash import Dash, callback, Input, Output, State, html
+
+import numpy as np
+import pandas as pd
+import plotly.figure_factory as ff
+import plotly.graph_objects as go
+from dash import Dash, Input, Output, State, callback, html
+
+from app.components import placeholder_figure
 from ev_optimisation.adapters import result_to_json
 from ev_optimisation.adapters.dash_adapters import load_and_filter_generation
 from ev_optimisation.algorithm import optimise_ev_population

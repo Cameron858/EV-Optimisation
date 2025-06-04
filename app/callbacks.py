@@ -253,6 +253,6 @@ def register_callbacks(app: Dash) -> Dash:
     def clear_data_store(n_clicks):
         logger.debug(f"Clearing data store {n_clicks}")
         if n_clicks:
-            return ""
+            return None
 
     return app

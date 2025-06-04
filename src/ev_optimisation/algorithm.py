@@ -1,8 +1,10 @@
 import random
+
+import numpy as np
+
 from ev_optimisation.operators import mutate, sbx_crossover
 from ev_optimisation.pipelines import evaluate_population
-from ev_optimisation.vehicle import Vehicle, VehicleConfig, GenerationResult
-import numpy as np
+from ev_optimisation.vehicle import GenerationResult, Vehicle, VehicleConfig
 
 
 def create_random_vehicle() -> Vehicle:

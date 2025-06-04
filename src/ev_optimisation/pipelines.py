@@ -1,16 +1,18 @@
-from ev_optimisation.vehicle import Vehicle, VehicleConfig
+from functools import partial
+
+import numpy as np
+
 from ev_optimisation.physics_model import (
     coeff_rolling_resistance,
     drag_force,
     kmh_to_ms,
-    rolling_resistance_force,
-    time_to_battery_drain,
     motor_driving_force,
+    rolling_resistance_force,
     rpm_to_rads,
+    time_to_battery_drain,
     time_to_target_speed,
 )
-import numpy as np
-from functools import partial
+from ev_optimisation.vehicle import Vehicle, VehicleConfig
 
 
 def vehicle_acc_time(vehicle: Vehicle, config: VehicleConfig) -> float:

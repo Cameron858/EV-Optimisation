@@ -1,10 +1,12 @@
 from typing import Any, Literal
+
 import matplotlib.pyplot as plt
 import numpy as np
-from ev_optimisation.vehicle import GenerationResult, Vehicle
 import pandas as pd
-from pyprojroot import here
 import plotly.graph_objects as go
+from pyprojroot import here
+
+from ev_optimisation.vehicle import GenerationResult, Vehicle
 
 
 def plot_population(p: list[Vehicle], marker_scaler=75) -> tuple[plt.Figure, Any]:

@@ -6,7 +6,6 @@ from ev_optimisation.physics_model import (
     time_to_battery_drain,
 )
 
-
 if __name__ == "__main__":
 
     # example for calculating range

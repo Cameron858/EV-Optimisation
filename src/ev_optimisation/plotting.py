@@ -168,6 +168,9 @@ def plot_result(
             xaxis_title=xaxis_title,
             yaxis_title=yaxis_title,
         )
+        # Always show legend if plotting fronts
+        if fronts:
+            fig.update_layout(showlegend=True)
 
     # Convert the population and objectives into a structured numpy array for plotting.
     pop_array = np.array(
